@@ -15,10 +15,19 @@ public:
 	virtual void update();
 	virtual void clean();
 
+	void collideBottom(SDLGameObject* p);
+	void collideTop();
+	void collideRight(SDLGameObject* p);
+	void collideLeft(SDLGameObject* p);
+
+
 private:
 	void handleInput(); //page 89
 	int gravity = 10;
 	bool jumping = true;
+
+protected: 
+	
 };
 
 #endif

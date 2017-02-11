@@ -100,3 +100,23 @@ m_currentFrame = int(((SDL_GetTicks() / 100) % 6));
 */
 
 
+void Player::collideBottom(SDLGameObject* p)
+{
+	m_position.setY(p->getPos().getY() - m_height);
+}
+
+void Player::collideTop()
+{
+	//TODO:: Set Up velocity to 0
+}
+
+void Player::collideRight(SDLGameObject * p)
+{
+	m_position.setX(p->getPos().getX() - m_width);
+}
+
+void Player::collideLeft(SDLGameObject * p)
+{
+	m_position.setX(p->getPos().getX + p->getWidth());
+}
+
