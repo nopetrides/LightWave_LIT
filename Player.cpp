@@ -16,13 +16,13 @@ void Player::update()
 
 
 	m_currentFrame = int(((SDL_GetTicks() / 50) % 7)); // Running animation
-	
+
 
 	handleInput();
-	
+
 
 	SDLGameObject::update();
-	
+
 }
 
 void Player::clean()
@@ -31,11 +31,11 @@ void Player::clean()
 
 void Player::handleInput()
 {
-	if(TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_RIGHT))
+	if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_RIGHT))
 	{
 		if (m_velocity.getX() < 0)
 		{
-			
+
 			m_velocity.setX(m_velocity.getX() + 1);
 		}
 		else if (m_velocity.getX() < 5)
@@ -45,13 +45,13 @@ void Player::handleInput()
 			else
 				m_velocity.setX(m_velocity.getX() + 0.10);
 		}
-	//	std::cout << "Key down right key detected " << "\n";
+		//	std::cout << "Key down right key detected " << "\n";
 	}
-	else if(TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT))
+	else if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT))
 	{
 		if (m_velocity.getX() > 0)
 		{
-			m_velocity.setX(m_velocity.getX()  -1);
+			m_velocity.setX(m_velocity.getX() - 1);
 		}
 		else if (m_velocity.getX() > -5)
 		{
@@ -60,7 +60,7 @@ void Player::handleInput()
 			else
 				m_velocity.setX(m_velocity.getX() - 0.1);
 		}
-	//	std::cout << "Key down left key detected " << "\n";
+		//	std::cout << "Key down left key detected " << "\n";
 	}
 	else
 	{
@@ -74,7 +74,7 @@ void Player::handleInput()
 		else
 			m_velocity.setX(0);
 	}
-	if(TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_UP))
+	if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_UP))
 	{
 		//m_velocity.setY(-2);
 		if (!jumping)
@@ -103,32 +103,48 @@ void Player::handleInput()
 			m_velocity.setY(0);
 			jumping = false;
 		}
-		else 
+		else
 		{
 			m_velocity.setY(m_velocity.getY() + 0.5);
 		}
 	}
-	if(TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_DOWN))
+	if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_DOWN))
 	{
 		//m_velocity.setY(2);
 	}
-	
+
+}
+
+void Player::collideBottom(SDLGameObject* p)
+{
+	m_position.setY(p->getPos().getY() - m_height);
+}
+
+void Player::collideTop()
+{
+	//TODO:: Set Up velocity to 0
+}
+
+void Player::collideRight(SDLGameObject * p)
+{
+	m_position.setX(p->getPos().getX() - m_width);
+}
+
+void Player::collideLeft(SDLGameObject * p)
+{
+	m_position.setX(p->getPos().getX() + p->getWidth());
 }
 
 
 /*
 void Player::draw(SDL_Renderer* pRenderer)
 {
-	GameObject::draw(pRenderer);
+GameObject::draw(pRenderer);
 }
-
 void Player::update()
 {
-	//using the fish sprite which has 5 frames
-	m_x += 2;
-
+//using the fish sprite which has 5 frames
+m_x += 2;
 m_currentFrame = int(((SDL_GetTicks() / 100) % 6));
 }
 */
-
-
