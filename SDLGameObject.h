@@ -33,8 +33,8 @@ public:
 
 protected:
 
-//	int m_x;
-//	int m_y;
+	//	int m_x;
+	//	int m_y;
 
 	Vector2D m_position;
 	Vector2D m_velocity;
