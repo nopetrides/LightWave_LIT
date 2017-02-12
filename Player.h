@@ -10,7 +10,6 @@ class Player : public SDLGameObject
 {
 public:
 	Player(const LoaderParams* pParams);
-	void jump();
 	virtual void draw();
 	virtual void update();
 	virtual void clean();
@@ -26,8 +25,8 @@ private:
 	int gravity = 10;
 	bool jumping = true;
 
-protected: 
-	
+protected:
+
 };
 
 #endif
