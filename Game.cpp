@@ -23,7 +23,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width,int height, boo
 		gSoundFX = Mix_LoadWAV("assets/Dawn.wav"); // ** LOAD A SOUND FX / SOUND BYTE FROM FILE - CAN ONLY BE .WAV (?)
 		gMusic = Mix_LoadMUS("assets/Upbeat 8 bit.wav"); // ** LOAD A MUSIC FILE, USUALLY USED FOR BGM AS IT CAN BE LOOPED LATER 
 
-
+		InputHandler::Instance()->initialiseJoysticks();
 		int flags = 0;
 		if(fullscreen)
 		{
@@ -49,28 +49,6 @@ bool Game::init(const char* title, int xpos, int ypos, int width,int height, boo
 
 			if(m_pRenderer != 0) // renderer init success
 			{
-			/*									// to load
-				if(!TheTextureManager::Instance()->load("assets/animate-alpha.png","animate", m_pRenderer))
-				{
-					return false;
-				}
-
-				if(!TheTextureManager::Instance()->load("assets/animate-fish-alpha-square.png","animate-fish", m_pRenderer))
-				{
-					return false;
-				}
-				std::cout << "renderer creation success\n";
-
-
-
-				m_gameObjects.push_back(new Player(new LoaderParams(500, 100, 128, 82,"animate")));
-
-				m_gameObjects.push_back(new Enemy(new LoaderParams(190, 190, 43, 43, "animate-fish")));
-				m_gameObjects.push_back(new Enemy(new LoaderParams(290, 290, 43, 43, "animate-fish")));
-				m_gameObjects.push_back(new Enemy(new LoaderParams(390, 390, 43, 43, "animate-fish")));
-
-				*/
-
 				SDL_SetRenderDrawColor(m_pRenderer,0,0,0,255);
 			}
 			else
