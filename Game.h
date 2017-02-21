@@ -31,7 +31,6 @@ private:
 	std::vector<GameObject*> m_gameObjects;
 	GameStateMachine* m_pGameStateMachine;
 
-
 	bool m_bRunning;
 public:
 	static Game* Instance()
@@ -71,7 +70,7 @@ public:
 	bool SoundOn = true;
 	int NumPlayers = 0;
 	int level = 0;
-
+	static const int level_height = 1080;
 };
 // create the typedef
 	typedef Game TheGame;

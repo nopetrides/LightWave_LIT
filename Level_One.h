@@ -7,25 +7,27 @@
 
 
 /*
-	Chris : 
-	Created Class
-	Created update function so the background Rect follows player position
-	Created loadTextures function to load each texture to the texture manager
-	Created createObjects to handle object instantiation and pushBack calls
-	
+Chris :
+Created Class
+Created update function so the background Rect follows player position
+Created loadTextures function to load each texture to the texture manager
+Created createObjects to handle object instantiation and pushBack calls
+
 */
-class Level_One 
+class Level_One
 {
-public: 
+public:
 
 	Level_One();
 	void loadTextures();
-	void createObjects( std::vector<GameObject* >* gameObjects);
+	void createObjects(std::vector<GameObject* >* gameObjects, std::vector<SDLGameObject*>* platforms);
+	void setWinLocation(int x, int y, int width, int height);
+	SDL_Rect getWinLocation();
 
-	
 
 protected:
-
+private:
+	SDL_Rect p_winLocation;
 
 
 };
