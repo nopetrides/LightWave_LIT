@@ -5,6 +5,7 @@ Player::Player(const LoaderParams* pParams) :SDLGameObject(pParams)
 {
 	start_posX = pParams->getX();
 	start_posY = pParams->getY();
+	setType("Player");
 }
 
 void Player::draw()
@@ -28,6 +29,10 @@ void Player::update()
 	if (b_collideBottom)
 	{
 		collideBottom(current_collide);
+	}
+	else if (m_velocity.getX() > 0)
+	{
+		jumping = true;
 	}
 	if (b_collideTop)
 	{
@@ -67,7 +72,7 @@ void Player::handleInput()
 			else
 				m_velocity.setX(m_velocity.getX() + 0.1); // bad control in air
 		}
-		
+
 	}
 	else if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT))//	std::cout << "Key down left key detected " << "\n";
 	{
@@ -82,7 +87,7 @@ void Player::handleInput()
 			else
 				m_velocity.setX(m_velocity.getX() - 0.1); // bad control in air
 		}
-		
+
 	}
 	else
 	{
@@ -109,13 +114,18 @@ void Player::handleInput()
 			{
 				m_velocity.setY(m_velocity.getY() + 0.2); // 'gravity' is lessened (this allows to hold the up button and jump higher)
 			}
+			else if (!double_jumping)
+			{
+				m_velocity.setY(-8);
+				double_jumping = true;
+			}
 			else // if falling
 			{
 				m_velocity.setY(m_velocity.getY() + 0.5);
 			}
 		}
 		else // if not holding button up
-		{ 
+		{
 			m_velocity.setY(m_velocity.getY() + 0.5); // gravity
 		}
 	}
@@ -133,6 +143,11 @@ void Player::handleInput()
 			{
 				m_velocity.setY(m_velocity.getY() + 0.2); // 'gravity' is lessened (this allows to hold the up button and jump higher)
 			}
+			else if (!double_jumping)
+			{
+				m_velocity.setY(-8);
+				double_jumping = true;
+			}
 			else // if falling
 			{
 				m_velocity.setY(m_velocity.getY() + 0.5); // gravity
@@ -146,6 +161,41 @@ void Player::handleInput()
 	if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_DOWN))
 	{
 		//Does nothing yet
+	}
+	if (TheInputHandler::Instance()->joysticksInitialised()) { // Check if joystick is initialised
+		if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_X) || TheInputHandler::Instance()->getButtonState(0, 1)) // **replace (0,0) with joystick for each player
+		{
+			if (dash_available)
+			{
+				if (m_velocity.getX() > 0) // if moving to the right
+				{
+					m_velocity.setX(10);
+				}
+				else if (m_velocity.getX() < 0) //
+				{
+					m_velocity.setX(-10);
+				}
+				dash_available = false;
+			}
+		}
+	}
+	else
+	{
+		if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_X)) // **replace (0,0) with joystick for each player
+		{
+			if (dash_available)
+			{
+				if (m_velocity.getX() > 0) // if moving to the right
+				{
+					m_velocity.setX(10);
+				}
+				else if (m_velocity.getX() < 0) //
+				{
+					m_velocity.setX(-10);
+				}
+				dash_available = false;
+			}
+		}
 	}
 
 }

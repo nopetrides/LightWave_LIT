@@ -2,6 +2,7 @@
 #ifndef  LEVEL_ONE_H
 #define  LEVEL_ONE_H
 #include "Game.h"
+#include "Background.h"
 #include "Platform.h"
 #include <vector>
 
@@ -20,7 +21,7 @@ public:
 
 	Level_One();
 	void loadTextures();
-	void createObjects(std::vector<GameObject* >* gameObjects, std::vector<SDLGameObject*>* platforms);
+	void createObjects(std::vector<SDLGameObject* >* gameObjects, std::vector<SDLGameObject*>* platforms);
 	void setWinLocation(int x, int y, int width, int height);
 	SDL_Rect getWinLocation();
 

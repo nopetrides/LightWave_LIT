@@ -11,16 +11,25 @@ const std::string PlayState::s_playID = "PLAY";
 
 void PlayState::update()
 {
-	std::vector<GameObject*>::iterator myIter;
+	int playerH = m_Players[0]->getHeight();
+	int playerW = m_Players[0]->getWidth();
+
+	camera->x = m_Players[0]->getPos().m_x + (playerH /2) - (screen_w / 2);
+	camera->y = m_Players[0]->getPos().m_y + (playerW /2) - (screen_h / 2);
+	//keepCameraInBounds();
 
 	if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_ESCAPE))
 	{
+		//Pause the timer just before entering the pause state. 
+		p_Timer->pause();
+
 		TheGame::Instance()->getStateMachine()->pushState(new PauseState());
 	}
 
-	for (myIter = m_gameObjects.begin(); myIter != m_gameObjects.end(); myIter++)
+	for (int i = 0; i < m_gameObjects.size(); i++)
 	{
-		(*myIter)->update();
+		m_gameObjects[i]->update();
+
 	}
 
 	for (int i = 0; i < m_Platforms.size(); i++)
@@ -32,14 +41,27 @@ void PlayState::update()
 	{
 		TheGame::Instance()->getStateMachine()->changeState(new MenuState());
 	}
+
+	//Updating the timer exclusively since it's not in any of the vectors atm
+	p_Timer->update(TheGame::Instance()->getRenderer());
 }
 
 void PlayState::render()
 {
 	for (int i = 0; i < m_gameObjects.size(); i++)
 	{
+		(m_gameObjects[i]->subCameraOffset(camera));
+		
 		m_gameObjects[i]->draw();
+		
+		(m_gameObjects[i]->addCameraOffset(camera));
+
+		
+		
 	}
+
+
+	p_Timer->draw(TheGame::Instance()->getRenderer());
 }
 
 bool PlayState::onEnter()
@@ -48,8 +70,9 @@ bool PlayState::onEnter()
 	{
 		return false;
 	}
-
-
+	//Instantiate the timer. 
+	p_Timer = new Timer();
+	p_Timer->init();
 	//Determine what level, and load it's stuff. Might move all this out to a function
 
 	if (TheGame::Instance()->level == 1)
@@ -73,11 +96,15 @@ bool PlayState::onEnter()
 		//(500, 250, 100, 50, "platform"));
 	}
 
-	SDLGameObject* player = new Player(new LoaderParams(100, 100, 71, 65, "player"));
+	SDLGameObject* player = new Player(new LoaderParams(500, 500, 71, 65, "player"));
 	m_gameObjects.push_back(player);
 	m_Players.push_back(player);
 
 	std::cout << "entering PlayState\n";
+
+	// Start the timer
+	p_Timer->start();
+
 	return true;
 }
 
@@ -92,6 +119,8 @@ bool PlayState::onExit()
 	TheTextureManager::Instance()->clearFromTextureMap("platform");
 	TheTextureManager::Instance()->clearFromTextureMap("BG");
 	std::cout << "exiting PlayState\n";
+	//Stop the Timer
+	p_Timer->stop();
 	return true;
 }
 
@@ -121,4 +150,24 @@ bool PlayState::checkForWin(SDL_Rect winLocation, SDLGameObject* player)
 	else
 		return false;
 
+}
+void PlayState::keepCameraInBounds()
+{
+	//Keep the camera in bounds
+	if (camera->x < 0)
+	{
+		camera->x = 0;
+	}
+	if (camera->y < 0)
+	{
+		camera->y = 0;
+	}
+	if (camera->x > TheGame::Instance()->level_width - camera->w)
+	{
+		camera->x = TheGame::Instance()->level_width - camera->w;
+	}
+	if (camera->y > TheGame::Instance()->level_height - camera->h)
+	{
+		camera->y = TheGame::Instance()->level_height - camera->h;
+	}
 }
