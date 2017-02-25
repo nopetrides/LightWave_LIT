@@ -13,11 +13,9 @@ public:
 	virtual void update();
 	virtual void clean();
 
+
 private:
 	int m_ChangeSpeed;
-
-
-
 
 };
 

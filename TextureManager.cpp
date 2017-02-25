@@ -76,8 +76,7 @@ destRect.x = x;
 destRect.y = y;
 
    // SDL_SetTextureAlphaMod(m_textureMap[id], alpha);
-SDL_RenderCopyEx(pRenderer, m_textureMap[id], &srcRect,
-&destRect, 0, 0, flip);
+SDL_RenderCopyEx(pRenderer, m_textureMap[id], &srcRect, &destRect, 0, 0, flip);
 }
 
 

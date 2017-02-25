@@ -14,6 +14,9 @@ SDLGameObject::SDLGameObject(const LoaderParams* pParams) :
 	m_textureID = pParams->getTextureID();
 	m_currentRow = 1;
 	m_currentFrame = 1;
+
+	originX = m_position.m_x;
+	originY = m_position.m_y;
 }
 
 void SDLGameObject::draw()
@@ -129,6 +132,7 @@ void SDLGameObject::collideBottom(SDLGameObject* p)
 {
 	m_velocity.setY(0);
 	jumping = false;
+	double_jumping = false;
 	m_position.setY(m_position.getY() - 1);
 }
 
@@ -148,4 +152,15 @@ void SDLGameObject::collideLeft(SDLGameObject * p)
 {
 	m_velocity.setX(0);
 	m_position.setX(m_position.getX() + 1);
+}
+
+void SDLGameObject::subCameraOffset(SDL_Rect* cam)
+{
+	m_position.m_x  -= cam->x;
+	m_position.m_y -= cam->y;
+}
+void SDLGameObject::addCameraOffset(SDL_Rect * cam)
+{
+	m_position.m_x += cam->x;
+	m_position.m_y += cam->y;
 }

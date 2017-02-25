@@ -71,6 +71,10 @@ public:
 	int NumPlayers = 0;
 	int level = 0;
 	static const int level_height = 1080;
+	static const int level_width = 1920;
+	static const int screen_width = 640;
+	static const int screen_height = 480;
+
 };
 // create the typedef
 	typedef Game TheGame;

@@ -14,6 +14,12 @@ bool Game::init(const char* title, int xpos, int ypos, int width,int height, boo
 	// attempt to initialize SDL
 	if(SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
+		if (TTF_Init() < 0)
+		{
+			std::cout << "Failed to Init TTF.\n";
+		}
+		
+		
 		//Load Audio Mixer
 		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) // ** OPEN THE MIXER, DEFAULT VALUES 
 		{

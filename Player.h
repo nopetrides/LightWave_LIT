@@ -27,6 +27,8 @@ private:
 	int start_posX;
 	int start_posY;
 	bool alive = true;
+	bool dash_available = true;
+	
 protected:
 
 };
