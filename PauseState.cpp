@@ -4,6 +4,7 @@
 //#include "Player.h"
 #include "MenuButton.h"
 #include "MenuState.h"
+#include "PlayState.h"
 
 const std::string PauseState::s_pauseID = "PAUSE";
 
@@ -15,6 +16,11 @@ void PauseState::s_pauseToMain()
 void PauseState::s_resumePlay()
 {
 	TheGame::Instance()->getStateMachine()->popState();
+}
+
+void PauseState::s_restartPlay()
+{
+	TheGame::Instance()->getStateMachine()->changeState(new PlayState());
 }
 
 void PauseState::update()
@@ -36,13 +42,19 @@ void PauseState::render()
 bool PauseState::onEnter()
 {
 	if(!TheTextureManager::Instance()->load("assets/resume.png",
-	"resumebutton", TheGame::Instance()->getRenderer()))
+		"resumebutton", TheGame::Instance()->getRenderer()))
+	{
+		return false;
+	}
+
+	if (!TheTextureManager::Instance()->load("assets/restart.png",
+		"restartbutton", TheGame::Instance()->getRenderer()))
 	{
 		return false;
 	}
 
 	if(!TheTextureManager::Instance()->load("assets/main.png",
-	"mainbutton", TheGame::Instance()->getRenderer()))
+		"mainbutton", TheGame::Instance()->getRenderer()))
 	{
 		return false;
 	}
@@ -53,8 +65,12 @@ bool PauseState::onEnter()
 	GameObject* button2 = new MenuButton(new LoaderParams(200, 300,
 	200, 80, "resumebutton"), s_resumePlay);
 
+	GameObject* button3 = new MenuButton(new LoaderParams(200, 200,
+	200, 80, "restartbutton"), s_restartPlay);
+
 	m_gameObjects.push_back(button1);
 	m_gameObjects.push_back(button2);
+	m_gameObjects.push_back(button3);
 
 	std::cout << "entering PauseState\n";
 
@@ -70,6 +86,8 @@ bool PauseState::onExit()
 
 		m_gameObjects.clear();
 	TheTextureManager::Instance()->clearFromTextureMap("resumebutton");
+
+	TheTextureManager::Instance()->clearFromTextureMap("restartbutton");
 
 	TheTextureManager::Instance()->clearFromTextureMap("mainbutton");
 

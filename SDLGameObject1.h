@@ -1,4 +1,4 @@
-﻿//
+//
 //  GameObject.h
 //  SDL Game Programming Book
 //
@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 shaun mitchell. All rights reserved.
 //
 
-#ifndef SDLGameObject_h
-#define SDLGameObject_h
+#ifndef SDL_Game_Programming_Book_SDLGameObject_h
+#define SDL_Game_Programming_Book_SDLGameObject_h
 
 #include <iostream>
 #include "SDL.h"
@@ -26,9 +26,6 @@ public:
 	virtual void draw();
 	virtual void update();
 	virtual void clean();
-	void subCameraOffset(SDL_Rect* cam);
-	void addCameraOffset(SDL_Rect *cam);
-	
 
 	Vector2D getPos() { return m_position; }
 	int getHeight() { return m_height; }
@@ -41,13 +38,13 @@ public:
 
 	bool jumping = true;
 	bool double_jumping = true;
-	bool alive = true;
+
 	bool b_collideBottom = false;
 	bool b_collideTop = false;
 	bool b_collideRight = false;
 	bool b_collideLeft = false;
 
-	void PlayerCollisionAgainstHazards(SDLGameObject* hazards);
+
 	void PlayerCollisionAgainstPlatforms(SDLGameObject* platform);
 	SDLGameObject* current_collide = NULL;
 
@@ -64,9 +61,6 @@ protected:
 
 	int m_width;
 	int m_height;
-
-	int originX;
-	int originY;
 
 	int m_currentRow;
 	int m_currentFrame;

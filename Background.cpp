@@ -1,4 +1,4 @@
-#include "Background.h"
+﻿#include "Background.h"
 
 Background::Background(const LoaderParams* pParams) :SDLGameObject(pParams)
 {
@@ -20,5 +20,4 @@ void Background::clean()
 {
 	SDLGameObject::clean();
 }
-
 

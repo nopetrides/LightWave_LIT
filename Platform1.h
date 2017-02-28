@@ -1,4 +1,4 @@
-﻿#ifndef PLATFORM_H 
+#ifndef PLATFORM_H 
 #define PLATFORM_H
 #include "SDLGameObject.h"
 
@@ -13,9 +13,11 @@ public:
 	virtual void update();
 	virtual void clean();
 
-
 private:
 	int m_ChangeSpeed;
+
+
+
 
 };
 

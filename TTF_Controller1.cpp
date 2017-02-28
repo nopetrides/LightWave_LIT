@@ -1,7 +1,5 @@
-﻿#include "TTF_Controller.h"
+#include "TTF_Controller.h"
 #include <iostream>
-
-/*
 void TTF_Controller::init()
 {
 	if (TTF_Init() < 0)
@@ -22,7 +20,7 @@ void TTF_Controller::setUpFont()
 	
 	
 	
-}*/
+}
 /*
 void TTF_Controller::freeFontSurface()
 {

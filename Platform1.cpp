@@ -1,5 +1,5 @@
-﻿#include "Platform.h"
-#include "Game.h"
+#include "Platform.h"
+
 Platform::Platform(const LoaderParams* pParams) :SDLGameObject(pParams)
 {
 

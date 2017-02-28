@@ -14,25 +14,14 @@ bool Game::init(const char* title, int xpos, int ypos, int width,int height, boo
 	// attempt to initialize SDL
 	if(SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
-		if (TTF_Init() < 0)
-		{
-			std::cout << "Failed to Init TTF.\n";
-		}
-		
-		
 		//Load Audio Mixer
 		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) // ** OPEN THE MIXER, DEFAULT VALUES 
 		{
 			std::cout << "Failed to make Mixer.";
 		}
 		//Load Sound Files
-		gJumpFX = Mix_LoadWAV("assets/jump.wav"); // ** LOAD A SOUND FX / SOUND BYTE FROM FILE - CAN ONLY BE .WAV (?)
-		gLandFX = Mix_LoadWAV("assets/land.wav"); // ** LOAD A SOUND FX / SOUND BYTE FROM FILE - CAN ONLY BE .WAV (?)
-		gDashFX = Mix_LoadWAV("assets/dash.wav"); // ** LOAD A SOUND FX / SOUND BYTE FROM FILE - CAN ONLY BE .WAV (?)
-		gWalkFX = Mix_LoadWAV("assets/walk.wav"); // ** LOAD A SOUND FX / SOUND BYTE FROM FILE - CAN ONLY BE .WAV (?)
-		gDieFX = Mix_LoadWAV("assets/die.wav"); // ** LOAD A SOUND FX / SOUND BYTE FROM FILE - CAN ONLY BE .WAV (?)
-		gMusic_future = Mix_LoadMUS("assets/future.wav"); // ** LOAD A MUSIC FILE, USUALLY USED FOR BGM AS IT CAN BE LOOPED LATER 
-		gMusic = Mix_LoadMUS("assets/Menu.wav"); // ** LOAD A MUSIC FILE, USUALLY USED FOR BGM AS IT CAN BE LOOPED LATER 
+		gSoundFX = Mix_LoadWAV("assets/Dawn.wav"); // ** LOAD A SOUND FX / SOUND BYTE FROM FILE - CAN ONLY BE .WAV (?)
+		gMusic = Mix_LoadMUS("assets/Upbeat 8 bit.wav"); // ** LOAD A MUSIC FILE, USUALLY USED FOR BGM AS IT CAN BE LOOPED LATER 
 
 		InputHandler::Instance()->initialiseJoysticks();
 		int flags = 0;

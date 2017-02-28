@@ -18,21 +18,22 @@ void Player::update()
 	// Akward to try and get + set current Y pos, consider changing
 
 	m_currentFrame = int(((SDL_GetTicks() / 50) % 7)); // Running animation
-
+	if (m_velocity.getY() == 0 && m_velocity.getX() != 0)
+	{
+		if (!Mix_Playing(0))
+			Mix_PlayChannel(0, TheGame::Instance()->gWalkFX, 0); // ** PLAY SFX/SOUND BYTE - PUT THIS WHEREVER THE SFX WOULD BE PLAYED - the '2' means it loops 3 times total
+	}
 	handleInput();
 
 	SDLGameObject::update();
 	if (m_position.getY() > TheGame::Instance()->level_height)
 	{
 		alive = false;
+
 	}
-	if (b_collideBottom)
+	/*if (b_collideBottom)
 	{
 		collideBottom(current_collide);
-	}
-	else if (m_velocity.getX() > 0)
-	{
-		jumping = true;
 	}
 	if (b_collideTop)
 	{
@@ -45,11 +46,24 @@ void Player::update()
 	if (b_collideRight)
 	{
 		collideRight(current_collide);
-	}
+	}*/
 	if (!alive)
 	{
 		respawn();
 	}
+	midpointX = m_position.m_x + (m_width / 2);
+	midpointY = m_position.m_y + (m_height / 2);
+
+	//Update position of the grapplingHook point
+	if (!extending)
+	{
+		grapplePoint->x = midpointX;
+		grapplePoint->y = midpointY;
+
+		desiredX = NULL;
+		desiredY = NULL;
+	}
+
 }
 
 void Player::clean()
@@ -109,6 +123,7 @@ void Player::handleInput()
 			{
 				m_velocity.setY(-10); // set upwards velocity
 				jumping = true;
+				Mix_PlayChannel(-1, TheGame::Instance()->gLandFX, 0); // ** PLAY SFX/SOUND BYTE - PUT THIS WHEREVER THE SFX WOULD BE PLAYED - the '2' means it loops 3 times total
 			}
 			else if (m_velocity.getY() < 0) // if still moving upwards
 			{
@@ -118,6 +133,7 @@ void Player::handleInput()
 			{
 				m_velocity.setY(-8);
 				double_jumping = true;
+				Mix_PlayChannel(-1, TheGame::Instance()->gLandFX, 0); // ** PLAY SFX/SOUND BYTE - PUT THIS WHEREVER THE SFX WOULD BE PLAYED - the '2' means it loops 3 times total
 			}
 			else // if falling
 			{
@@ -138,6 +154,7 @@ void Player::handleInput()
 			{
 				m_velocity.setY(-10); // set upwards velocity
 				jumping = true;
+				Mix_PlayChannel(-1, TheGame::Instance()->gLandFX, 0); // ** PLAY SFX/SOUND BYTE - PUT THIS WHEREVER THE SFX WOULD BE PLAYED - the '2' means it loops 3 times total
 			}
 			else if (m_velocity.getY() < 0) // if still moving upwards
 			{
@@ -147,6 +164,7 @@ void Player::handleInput()
 			{
 				m_velocity.setY(-8);
 				double_jumping = true;
+				Mix_PlayChannel(-1, TheGame::Instance()->gLandFX, 0); // ** PLAY SFX/SOUND BYTE - PUT THIS WHEREVER THE SFX WOULD BE PLAYED - the '2' means it loops 3 times total
 			}
 			else // if falling
 			{
@@ -176,6 +194,7 @@ void Player::handleInput()
 					m_velocity.setX(-10);
 				}
 				dash_available = false;
+				Mix_PlayChannel(-1, TheGame::Instance()->gDashFX, 0); // ** PLAY SFX/SOUND BYTE - PUT THIS WHEREVER THE SFX WOULD BE PLAYED - the '2' means it loops 3 times total
 			}
 		}
 	}
@@ -194,7 +213,102 @@ void Player::handleInput()
 					m_velocity.setX(-10);
 				}
 				dash_available = false;
+				Mix_PlayChannel(-1, TheGame::Instance()->gDashFX, 0); // ** PLAY SFX/SOUND BYTE - PUT THIS WHEREVER THE SFX WOULD BE PLAYED - the '2' means it loops 3 times total
 			}
+		}
+		if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_Z)) // **replace (0,0) with joystick for each player
+		{
+			extending = true;
+		}
+		if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_Z) == false)
+		{
+			extending = false;
+
+		}
+		//Hook direction tracking
+
+		if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_R) &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_G) == false &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_D) == false &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_F) == false && extending)
+		{	//Aiming Top only
+			grapplePoint->y -= hookExtendSpeed; //Update
+												//desiredX = m_velocity.m_x;
+			desiredY = -pullPlayerSpeed;
+		}
+		if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_R) &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_G) &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_D) == false &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_F) == false && extending)
+		{	//Aiming TopRight only
+			grapplePoint->x += hookExtendSpeed;
+			grapplePoint->y -= hookExtendSpeed;
+
+			desiredX = pullPlayerSpeed;
+			desiredY = -pullPlayerSpeed;
+		}
+		if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_R) == false &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_G) &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_D) == false &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_F) == false && extending)
+		{	//Aiming Right only
+			grapplePoint->x += hookExtendSpeed;
+			desiredX = pullPlayerSpeed;
+			//desiredY = m_velocity.m_y;
+		}
+		if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_R) == false &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_G) &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_D) == false &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_F) && extending)
+		{	//Aiming bottomRight only
+			grapplePoint->x += hookExtendSpeed;
+			grapplePoint->y += hookExtendSpeed;
+
+			desiredX = pullPlayerSpeed;
+			desiredY = pullPlayerSpeed;
+		}
+		if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_R) == false &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_G) == false &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_D) == false &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_F) && extending)
+		{	//Aiming bottom only
+			grapplePoint->y += hookExtendSpeed;
+
+			//desiredX = m_velocity.m_x;
+			desiredY = pullPlayerSpeed;
+		}
+		if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_R) == false &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_G) == false &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_D) &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_F) && extending)
+		{	//Aiming bottom left only
+			grapplePoint->x -= hookExtendSpeed;
+			grapplePoint->y += hookExtendSpeed;
+
+			desiredX = -pullPlayerSpeed;
+			desiredY = pullPlayerSpeed;
+
+		}
+		if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_R) == false &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_G) == false &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_D) &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_F) == false && extending)
+		{	//Aiming  left only
+			grapplePoint->x -= hookExtendSpeed;
+
+			desiredX = -pullPlayerSpeed;
+			//desiredY = m_velocity.m_y;
+		}
+		if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_R) &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_G) == false &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_D) &&
+			TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_F) == false && extending)
+		{	//Aiming  top left only
+			grapplePoint->x -= hookExtendSpeed;
+			grapplePoint->y -= hookExtendSpeed;
+
+			desiredX = -pullPlayerSpeed;
+			desiredY = -pullPlayerSpeed;
 		}
 	}
 
@@ -202,34 +316,53 @@ void Player::handleInput()
 /*
 void Player::collideBottom(SDLGameObject* p)
 {
-	m_velocity.setY(0);
-	jumping = false;
-	m_position.setY(m_position.getY() - 1);
+m_velocity.setY(0);
+jumping = false;
+m_position.setY(m_position.getY() - 1);
 }
 
 void Player::collideTop(SDLGameObject* p)
 {
-	m_velocity.setY(0);
-	m_position.setY(m_position.getY() + 1);
+m_velocity.setY(0);
+m_position.setY(m_position.getY() + 1);
 }
 
 void Player::collideRight(SDLGameObject * p)
 {
-	m_velocity.setX(0);
-	m_position.setX(m_position.getX() - 1);
+m_velocity.setX(0);
+m_position.setX(m_position.getX() - 1);
 }
 
 void Player::collideLeft(SDLGameObject * p)
 {
-	m_velocity.setX(0);
-	m_position.setX(m_position.getX() + 1);
+m_velocity.setX(0);
+m_position.setX(m_position.getX() + 1);
 }
 */
 void Player::respawn()
 {
+	Mix_PlayChannel(-1, TheGame::Instance()->gDieFX, 0); // ** PLAY SFX/SOUND BYTE - PUT THIS WHEREVER THE SFX WOULD BE PLAYED - the '2' means it loops 3 times total
 	m_position.setX(start_posX);
 	m_position.setY(start_posY);
 	m_velocity.setX(0);
 	m_velocity.setY(0);
 	alive = true;
+}
+bool Player::didHookHitPlatform(SDLGameObject *r)
+{
+
+	if ((grapplePoint->x >= r->getPos().getX()) &&
+		(grapplePoint->x < (r->getPos().getX() + r->getWidth())) &&
+		(grapplePoint->y >= r->getPos().getY()) &&
+		(grapplePoint->y < (r->getPos().getY() + r->getHeight())))
+	{
+		return true;
+	}
+	else return false;
+}
+
+void Player::applyForce(int x, int y)
+{
+	m_velocity.setX(x);
+	m_velocity.setY(y);
 }

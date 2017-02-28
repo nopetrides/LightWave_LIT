@@ -1,4 +1,4 @@
-#include "Level_One.h"
+﻿#include "Level_One.h"
 
 
 /*
@@ -33,7 +33,7 @@ void Level_One::loadTextures()
 	}
 }
 
-void Level_One::createObjects(std::vector<SDLGameObject* >* gameObjects, std::vector<SDLGameObject*>* platforms)
+void Level_One::createObjects(std::vector<SDLGameObject* >* gameObjects, std::vector<SDLGameObject*>* platforms, std::vector<SDLGameObject*>* hazards)
 {
 	//Create objects in the level. 
 	// This is where we will create a vector of all platforms for ease of coding
@@ -57,7 +57,9 @@ void Level_One::createObjects(std::vector<SDLGameObject* >* gameObjects, std::ve
 	SDLGameObject* plat13 = new Platform(new LoaderParams(650, 50, 400, 50, "platform")); // Overhead block
 
 
-																						  //Instantiate Win Location Object. 
+																						  //Hazards
+	SDLGameObject* haz = new Hazard(new LoaderParams(400, 350, 100, 100, "hazard"));
+	SDLGameObject* haz1 = new Hazard(new LoaderParams(250, 0, 100, 100, "hazard"));																		  //Instantiate Win Location Object. 
 																						  // This class type may change, if we make an actual winning zone class. 
 	SDLGameObject* winPlat = new Platform(new LoaderParams(500, 250, 100, 50, "platform"));
 
@@ -80,6 +82,9 @@ void Level_One::createObjects(std::vector<SDLGameObject* >* gameObjects, std::ve
 
 	gameObjects->push_back(winPlat);
 
+	gameObjects->push_back(haz);
+	gameObjects->push_back(haz1);
+
 	platforms->push_back(plat);
 	platforms->push_back(plat1);
 
@@ -100,6 +105,10 @@ void Level_One::createObjects(std::vector<SDLGameObject* >* gameObjects, std::ve
 								  // probably show a victory overlay and the player will stand on the platform 
 								  // waiting for the others to finish. 
 	platforms->push_back(winPlat);
+
+	//Adding the hazards to the hazard vector
+	hazards->push_back(haz);
+	hazards->push_back(haz1);
 }
 void Level_One::setWinLocation(int x, int y, int width, int height)
 {

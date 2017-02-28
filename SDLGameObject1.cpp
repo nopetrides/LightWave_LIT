@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include "SDLGameObject.h"
 #include "Game.h"
 
@@ -14,9 +14,6 @@ SDLGameObject::SDLGameObject(const LoaderParams* pParams) :
 	m_textureID = pParams->getTextureID();
 	m_currentRow = 1;
 	m_currentFrame = 1;
-
-	originX = m_position.m_x;
-	originY = m_position.m_y;
 }
 
 void SDLGameObject::draw()
@@ -152,78 +149,4 @@ void SDLGameObject::collideLeft(SDLGameObject * p)
 {
 	m_velocity.setX(0);
 	m_position.setX(m_position.getX() + 1);
-}
-
-void SDLGameObject::subCameraOffset(SDL_Rect* cam)
-{
-	m_position.m_x  -= cam->x;
-	m_position.m_y -= cam->y;
-}
-void SDLGameObject::addCameraOffset(SDL_Rect * cam)
-{
-	m_position.m_x += cam->x;
-	m_position.m_y += cam->y;
-}
-void SDLGameObject::PlayerCollisionAgainstHazards(SDLGameObject * hazard)
-{
-	current_collide = hazard;
-
-	//Chris and Setto
-	int playerTop = getPos().m_y; // Top of the player Rect
-	int playerBottom = getPos().m_y + getHeight(); // Bottom of the player Rect
-	int playerLeft = getPos().m_x; // Left of the player Rect 
-	int playerRight = getPos().m_x + getWidth(); // Right of the player Rect
-	int playerMidPointX = getPos().m_x + (getWidth() / 2); // Mid point of player X. 
-	int playerMidPointY = getPos().m_y + (getHeight() / 2); // Mid point of player Y. 
-	int playerHeight = getHeight();
-	int playerWidth = getWidth();
-
-	//Calculate top, bottom, left and right of hazard
-	int hazardTop = hazard->getPos().m_y; // Top of the hazard Rect
-	int hazardBottom = hazard->getPos().m_y + hazard->getHeight(); // Bottom of the hazard Rect
-	int hazardLeft = hazard->getPos().m_x; // Left of the hazard Rect 
-	int hazardRight = hazard->getPos().m_x + hazard->getWidth(); // Right of the hazard Rect
-
-																 //player lands on top of hazard
-	if (playerBottom >= hazardTop &&
-		playerBottom < hazardBottom &&
-		playerTop >= (hazardTop - playerHeight - collideDistance) &&
-		playerMidPointX >= hazardLeft &&
-		playerMidPointX <= hazardRight)
-	{
-		alive = false;
-	}
-
-	//player bumps head to bottom of hazard
-	if (playerTop <= hazardBottom &&
-		playerTop > hazardTop &&
-		playerBottom <= (hazardBottom + playerHeight + collideDistance) &&
-		playerMidPointX >= hazardLeft &&
-		playerMidPointX <= hazardRight)
-	{
-		alive = false;
-	}
-
-
-
-	//Player bumps into left side of hazard checking if bottom is > top of plat
-	if (playerMidPointY > hazardTop &&
-		playerMidPointY < hazardBottom &&
-		playerLeft >= (hazardLeft - playerWidth - collideDistance) &&
-		playerRight >= hazardLeft &&
-		playerRight <= hazardRight)
-	{
-		alive = false;
-	}
-
-	//Player bumps into right side of hazard check
-	if (playerMidPointY > hazardTop &&
-		playerMidPointY < hazardBottom &&
-		playerRight <= (hazardRight + playerWidth + collideDistance) &&
-		playerLeft <= hazardRight &&
-		playerLeft >= hazardLeft)
-	{
-		alive = false;
-	}
-
 }

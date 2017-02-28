@@ -1,5 +1,5 @@
-#ifndef SDL_PauseState_h
-#define SDL_PauseState_h
+#ifndef SDL_ScoreState_h
+#define SDL_ScoreState_h
 
 #include "GameState.h"
 //#include "GameObject.h"
@@ -7,7 +7,7 @@
 
 class GameObject;
 
-class PauseState : public GameState
+class ScoreState : public GameState
 {
 public:
 	virtual void update();
@@ -19,9 +19,8 @@ public:
 	virtual std::string getStateID() const { return s_pauseID; }
 
 private:
-	static void s_pauseToMain();
-	static void s_resumePlay();
-	static void s_restartPlay();
+	static void s_returnToMain();
+	static void s_retryPlay();
 
 	static const std::string s_pauseID;
 	std::vector<GameObject*> m_gameObjects;

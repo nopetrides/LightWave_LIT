@@ -1,67 +1,45 @@
-﻿#include "PlayState.h"
+#include "PlayState.h"
 #include "TextureManager.h"
 #include "Game.h"
 #include "Player.h"
 #include "Platform.h"
 #include "PauseState.h"
 #include "Level_One.h"
-#include "ScoreState.h"
+#include "MenuState.h"
 
 const std::string PlayState::s_playID = "PLAY";
 
 void PlayState::update()
 {
-	int playerH = m_Players[0]->getHeight();
-	int playerW = m_Players[0]->getWidth();
-
-	camera->x = m_Players[0]->getPos().m_x + (playerH /2) - (screen_w / 2);
-	camera->y = m_Players[0]->getPos().m_y + (playerW /2) - (screen_h / 2);
-	//keepCameraInBounds();
+	std::vector<GameObject*>::iterator myIter;
 
 	if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_ESCAPE))
 	{
-		//Pause the timer just before entering the pause state.
-		p_Timer->pause();
-
 		TheGame::Instance()->getStateMachine()->pushState(new PauseState());
 	}
 
-	for (int i = 0; i < m_gameObjects.size(); i++)
+	for (myIter = m_gameObjects.begin(); myIter != m_gameObjects.end(); myIter++)
 	{
-		m_gameObjects[i]->update();
+		(*myIter)->update();
 	}
 
 	for (int i = 0; i < m_Platforms.size(); i++)
 	{
 		m_Players[0]->PlayerCollisionAgainstPlatforms(m_Platforms[i]);
-
-		if (m_Players[0]->didHookHitPlatform(m_Platforms[i]))
-		{//Check for platform collision with the SDL hook point. 
-		 //TODO:: Distance checking
-			m_Players[0]->applyForce(m_Players[0]->getDesiredX(), m_Players[0]->getDesiredY());
-		}
 	}
 
 	if (checkForWin(level_one->getWinLocation(), m_Players[0]))
 	{
-		TheGame::Instance()->getStateMachine()->changeState(new ScoreState());
+		TheGame::Instance()->getStateMachine()->changeState(new MenuState());
 	}
-
-	//Updating the timer exclusively since it's not in any of the vectors atm
-	p_Timer->update(TheGame::Instance()->getRenderer());
 }
 
 void PlayState::render()
 {
 	for (int i = 0; i < m_gameObjects.size(); i++)
 	{
-		(m_gameObjects[i]->subCameraOffset(camera));
-		
 		m_gameObjects[i]->draw();
-		
-		(m_gameObjects[i]->addCameraOffset(camera));		
 	}
-	p_Timer->draw(TheGame::Instance()->getRenderer());
 }
 
 bool PlayState::onEnter()
@@ -71,13 +49,7 @@ bool PlayState::onEnter()
 		return false;
 	}
 
-	if (TheGame::Instance()->SoundOn) {
-		Mix_PlayMusic(TheGame::Instance()->gMusic_future, -1); // ** START BGM, the '-1' means it will loop ad inifitum
-														//SDL_Delay(5000); // ** NOTE THAT DELAYS DO NOT PAUSE SOUND FX OR MUSIC, AS THEY ARE RUNNING ON A THREAD (?)
-	}
-	//Instantiate the timer. 
-	p_Timer = new Timer();
-	p_Timer->init();
+
 	//Determine what level, and load it's stuff. Might move all this out to a function
 
 	if (TheGame::Instance()->level == 1)
@@ -87,7 +59,7 @@ bool PlayState::onEnter()
 		//load objects and textures
 		level_one = new Level_One();
 		level_one->loadTextures();
-		level_one->createObjects(&m_gameObjects, &m_Platforms,&m_Hazards);
+		level_one->createObjects(&m_gameObjects, &m_Platforms);
 
 		//Setting the win location, this isn't "linked" to the winning platform, 
 		// Just hardcoded to be above it. 
@@ -101,15 +73,11 @@ bool PlayState::onEnter()
 		//(500, 250, 100, 50, "platform"));
 	}
 
-	Player* player = new Player(new LoaderParams(500, 500, 71, 65, "player"));
+	SDLGameObject* player = new Player(new LoaderParams(100, 100, 71, 65, "player"));
 	m_gameObjects.push_back(player);
 	m_Players.push_back(player);
 
 	std::cout << "entering PlayState\n";
-
-	// Start the timer
-	p_Timer->start();
-
 	return true;
 }
 
@@ -124,8 +92,6 @@ bool PlayState::onExit()
 	TheTextureManager::Instance()->clearFromTextureMap("platform");
 	TheTextureManager::Instance()->clearFromTextureMap("BG");
 	std::cout << "exiting PlayState\n";
-	//Stop the Timer
-	p_Timer->stop();
 	return true;
 }
 
@@ -155,24 +121,4 @@ bool PlayState::checkForWin(SDL_Rect winLocation, SDLGameObject* player)
 	else
 		return false;
 
-}
-void PlayState::keepCameraInBounds()
-{
-	//Keep the camera in bounds
-	if (camera->x < 0)
-	{
-		camera->x = 0;
-	}
-	if (camera->y < 0)
-	{
-		camera->y = 0;
-	}
-	if (camera->x > TheGame::Instance()->level_width - camera->w)
-	{
-		camera->x = TheGame::Instance()->level_width - camera->w;
-	}
-	if (camera->y > TheGame::Instance()->level_height - camera->h)
-	{
-		camera->y = TheGame::Instance()->level_height - camera->h;
-	}
 }
