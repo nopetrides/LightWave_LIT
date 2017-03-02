@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include "GameStateMachine.h"
+#include "Timer.h"
 class Game
 {
 private:
@@ -17,17 +18,17 @@ private:
 	// create the s_pInstance member variable
 	static Game* s_pInstance;
 
-	
+
 	SDL_Window* m_pWindow;
 	SDL_Renderer* m_pRenderer;
 	int m_currentFrame;
-	
-/*	GameObject* m_player;
+
+	/*	GameObject* m_player;
 	GameObject* m_player2;
 	GameObject* m_enemy1;
 	GameObject* m_enemy2;
 	GameObject* m_enemy3;
-*/
+	*/
 	std::vector<GameObject*> m_gameObjects;
 	GameStateMachine* m_pGameStateMachine;
 
@@ -35,7 +36,7 @@ private:
 public:
 	static Game* Instance()
 	{
-		if(s_pInstance == 0)
+		if (s_pInstance == 0)
 		{
 			s_pInstance = new Game();
 			return s_pInstance;
@@ -44,14 +45,14 @@ public:
 	}
 
 
-//	Game() {}
+	//	Game() {}
 	~Game() {}
 
 	// simply set the running variable to true
-	bool init(const char* title, int xpos, int ypos, int width,int height, bool fullscreen);
+	bool init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
 
-	 SDL_Renderer* getRenderer() const { return m_pRenderer; }
-	 GameStateMachine* getStateMachine(){ return m_pGameStateMachine; }
+	SDL_Renderer* getRenderer() const { return m_pRenderer; }
+	GameStateMachine* getStateMachine() { return m_pGameStateMachine; }
 
 	void render();
 	void update();
@@ -64,20 +65,28 @@ public:
 	bool running() { return m_bRunning; }
 
 	// MUSIC VARIABLES
-	Mix_Chunk *gSoundFX; // SOUND BYTE
-	Mix_Music *gMusic; // BACKGROUND MUSIC	
+	Mix_Chunk *gJumpFX; // SOUND BYTE
+	Mix_Chunk *gLandFX; // SOUND BYTE
+	Mix_Chunk *gWalkFX; // SOUND BYTE
+	Mix_Chunk *gDashFX; // SOUND BYTE
+	Mix_Chunk *gDieFX; // SOUND BYTE
+	Mix_Chunk *gWrongFX; // SOUND BYTE
+	void No();
 
+	Mix_Music *gMusic; // BACKGROUND MUSIC	
+	Mix_Music *gMusic_future; // BACKGROUND MUSIC	
+	Timer* p_Timer;
 	bool SoundOn = true;
+	bool SFXOn = true;
 	int NumPlayers = 0;
 	int level = 0;
 	static const int level_height = 1080;
 	static const int level_width = 1920;
-	static const int screen_width = 640;
-	static const int screen_height = 480;
+	static const int screen_width = 1920;
+	static const int screen_height = 1080;
 
 };
 // create the typedef
-	typedef Game TheGame;
+typedef Game TheGame;
 
 #endif /* defined(__Game__) */
-

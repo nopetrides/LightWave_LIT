@@ -1,4 +1,4 @@
-//
+﻿//
 //  GameObject.h
 //  SDL Game Programming Book
 //

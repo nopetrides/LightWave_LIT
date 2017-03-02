@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 
 	freopen_s(&myFile,"CON","w", stdout);
 	// g_game = new Game();
-	if (TheGame::Instance()->init("Chapter 1", 100, 100, 640, 480, false))
+	if (TheGame::Instance()->init("Chapter 1", 100, 100, 1920, 1080, false))
 	{
 
 		while(TheGame::Instance()->running())

@@ -26,8 +26,14 @@ bool Game::init(const char* title, int xpos, int ypos, int width,int height, boo
 			std::cout << "Failed to make Mixer.";
 		}
 		//Load Sound Files
-		gSoundFX = Mix_LoadWAV("assets/Dawn.wav"); // ** LOAD A SOUND FX / SOUND BYTE FROM FILE - CAN ONLY BE .WAV (?)
-		gMusic = Mix_LoadMUS("assets/Upbeat 8 bit.wav"); // ** LOAD A MUSIC FILE, USUALLY USED FOR BGM AS IT CAN BE LOOPED LATER 
+		gJumpFX = Mix_LoadWAV("assets/jump.wav"); // ** LOAD A SOUND FX / SOUND BYTE FROM FILE - CAN ONLY BE .WAV (?)
+		gLandFX = Mix_LoadWAV("assets/land.wav"); // ** LOAD A SOUND FX / SOUND BYTE FROM FILE - CAN ONLY BE .WAV (?)
+		gDashFX = Mix_LoadWAV("assets/dash.wav"); // ** LOAD A SOUND FX / SOUND BYTE FROM FILE - CAN ONLY BE .WAV (?)
+		gWalkFX = Mix_LoadWAV("assets/walk.wav"); // ** LOAD A SOUND FX / SOUND BYTE FROM FILE - CAN ONLY BE .WAV (?)
+		gDieFX = Mix_LoadWAV("assets/die.wav"); // ** LOAD A SOUND FX / SOUND BYTE FROM FILE - CAN ONLY BE .WAV (?)
+		gWrongFX = Mix_LoadWAV("assets/no.wav"); // ** LOAD A SOUND FX / SOUND BYTE FROM FILE - CAN ONLY BE .WAV (?)
+		gMusic_future = Mix_LoadMUS("assets/future.wav"); // ** LOAD A MUSIC FILE, USUALLY USED FOR BGM AS IT CAN BE LOOPED LATER 
+		gMusic = Mix_LoadMUS("assets/Menu.wav"); // ** LOAD A MUSIC FILE, USUALLY USED FOR BGM AS IT CAN BE LOOPED LATER 
 
 		InputHandler::Instance()->initialiseJoysticks();
 		int flags = 0;
@@ -125,6 +131,13 @@ void Game::handleEvents()
 	{
 		m_pGameStateMachine->changeState(new PlayState());
 	}
+
+}
+
+void Game::No()
+{
+	if (TheGame::Instance()->SFXOn)
+		Mix_PlayChannel(-1, TheGame::Instance()->gWrongFX, 0); // ** PLAY SFX/SOUND BYTE - PUT THIS WHEREVER THE SFX WOULD BE PLAYED - the '2' means it loops 3 times total
 
 }
 

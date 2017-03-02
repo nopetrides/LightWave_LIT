@@ -1,13 +1,13 @@
-#ifndef SDL_LevelSelectState_h
-#define SDL_LevelSelectState_h
+#ifndef SDL_ScoreState_h
+#define SDL_ScoreState_h
 
 #include "GameState.h"
 //#include "GameObject.h"
 #include <vector>
-
+#include "Game.h"
 class GameObject;
 
-class LevelSelectState : public GameState
+class ScoreState : public GameState
 {
 public:
 	virtual void update();
@@ -18,14 +18,15 @@ public:
 
 	virtual std::string getStateID() const { return s_pauseID; }
 
+	int screen_width = TheGame::Instance()->screen_width;
+	int screen_height = TheGame::Instance()->screen_height;
+
+	void prepareToShowScore(SDL_Renderer* renderer);
+	bool doOonce = false;
+
 private:
-	static void s_LevelOne();
-	static void s_LevelTwo();
-	static void s_LevelThree();
-	static void s_LevelFour();
-	static void s_LevelFive();
-	static void s_PreviousMenu();
-	static void s_title();
+	static void s_returnToMain();
+	static void s_retryPlay();
 
 	static const std::string s_pauseID;
 	std::vector<GameObject*> m_gameObjects;
