@@ -1,4 +1,4 @@
-#ifndef PLATFORM_H 
+﻿#ifndef PLATFORM_H 
 #define PLATFORM_H
 #include "SDLGameObject.h"
 

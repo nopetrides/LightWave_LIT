@@ -1,4 +1,4 @@
-#include "SDL.h"
+﻿#include "SDL.h"
 #include "SDL_ttf.h"
 #include <sstream>
 
@@ -29,7 +29,7 @@ public:
 	void stop();
 	void pause();
 	void unpause();
-	void draw(SDL_Renderer* renderer);
+	void draw(SDL_Renderer* renderer, int x, int y, int w, int h);
 	void init();
 
 	int getTicks(); // Function to return the amount of ticks passed. 

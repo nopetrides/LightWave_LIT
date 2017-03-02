@@ -1,4 +1,4 @@
-//
+﻿//
 //  GameObject.h
 //  SDL Game Programming Book
 //
@@ -39,15 +39,19 @@ public:
 	void collideLeft(SDLGameObject* p);
 	void collideRight(SDLGameObject* p);
 
+	
 	bool jumping = true;
 	bool double_jumping = true;
+	bool alive = true;
+	bool dash_available = true;
 
+	//we dont use these anymore
 	bool b_collideBottom = false;
 	bool b_collideTop = false;
 	bool b_collideRight = false;
 	bool b_collideLeft = false;
 
-
+	void PlayerCollisionAgainstHazards(SDLGameObject* hazards);
 	void PlayerCollisionAgainstPlatforms(SDLGameObject* platform);
 	SDLGameObject* current_collide = NULL;
 

@@ -1,4 +1,4 @@
-#ifndef SDL_PlayState_h
+﻿#ifndef SDL_PlayState_h
 #define SDL_PlayState_h
 
 #include "GameState.h"
@@ -21,6 +21,7 @@ public:
 	bool checkForWin(SDL_Rect winLocation, SDLGameObject* player);
 	void keepCameraInBounds();
 	Level_One* level_one;
+	Level_One* level_two;
 	Timer* p_Timer;
 
 	int screen_w = TheGame::Instance()->screen_width;
@@ -32,7 +33,8 @@ private:
 	static const std::string s_playID;
 	std::vector<SDLGameObject*> m_gameObjects;
 	std::vector<SDLGameObject*> m_Platforms;
-	std::vector<SDLGameObject*> m_Players;
+	std::vector<Player*> m_Players;
+	std::vector<SDLGameObject*> m_Hazards;
 };
 
 #endif

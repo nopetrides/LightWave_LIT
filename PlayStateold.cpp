@@ -21,7 +21,7 @@ void PlayState::update()
 	if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_ESCAPE))
 	{
 		//Pause the timer just before entering the pause state.
-		TheGame::Instance()->p_Timer->pause();
+		p_Timer->pause();
 
 		TheGame::Instance()->getStateMachine()->pushState(new PauseState());
 	}
@@ -47,53 +47,17 @@ void PlayState::update()
 	}
 
 
-	if (TheGame::Instance()->level == 1)
+	if (checkForWin(level_one->getWinLocation(), m_Players[0]))
 	{
-		if (checkForWin(level_one->getWinLocation(), m_Players[0]))
-		{
-			TheGame::Instance()->getStateMachine()->changeState(new ScoreState());
-		}
+		TheGame::Instance()->getStateMachine()->changeState(new ScoreState());
 	}
-	else if (TheGame::Instance()->level == 2)
-	{
-		if (checkForWin(level_two->getWinLocation(), m_Players[0]))
-		{
-			TheGame::Instance()->getStateMachine()->changeState(new ScoreState());
-		}
-	}
-	/*
-	else if (TheGame::Instance()->level == 3)
-	{
-		if (checkForWin(level_three->getWinLocation(), m_Players[0]))
-		{
-			TheGame::Instance()->getStateMachine()->changeState(new ScoreState());
-		}
-	}
-	else if (TheGame::Instance()->level == 4)
-	{
-		if (checkForWin(level_four->getWinLocation(), m_Players[0]))
-		{
-			TheGame::Instance()->getStateMachine()->changeState(new ScoreState());
-		}
-	}
-	else if (TheGame::Instance()->level == 5)
-	{
-		if (checkForWin(level_five->getWinLocation(), m_Players[0]))
-		{
-			TheGame::Instance()->getStateMachine()->changeState(new ScoreState());
-		}
-	}
-	*/
 
-	
 	//Updating the timer exclusively since it's not in any of the vectors atm
-	TheGame::Instance()->p_Timer->update(TheGame::Instance()->getRenderer());
+	p_Timer->update(TheGame::Instance()->getRenderer());
 }
 
 void PlayState::render()
 {
-	m_Players[0]->setCamX(camera->x);
-	m_Players[0]->setCamY(camera->y);
 	for (int i = 0; i < m_gameObjects.size(); i++)
 	{
 		(m_gameObjects[i]->subCameraOffset(camera));
@@ -112,7 +76,7 @@ void PlayState::render()
 	}
 
 	
-	TheGame::Instance()->p_Timer->draw(TheGame::Instance()->getRenderer(), screen_w / 2, screen_h / 10, 200, 200);
+	p_Timer->draw(TheGame::Instance()->getRenderer());
 }
 
 bool PlayState::onEnter()
@@ -133,8 +97,8 @@ bool PlayState::onEnter()
 		//SDL_Delay(5000); // ** NOTE THAT DELAYS DO NOT PAUSE SOUND FX OR MUSIC, AS THEY ARE RUNNING ON A THREAD (?)
 	}
 	//Instantiate the timer. 
-	TheGame::Instance()->p_Timer = new Timer();
-	TheGame::Instance()->p_Timer->init();
+	p_Timer = new Timer();
+	p_Timer->init();
 	//Determine what level, and load it's stuff. Might move all this out to a function
 
 	if (TheGame::Instance()->level == 1)
@@ -154,16 +118,7 @@ bool PlayState::onEnter()
 		//Width is 110 just for some extra room. 
 
 
-		level_one->setWinLocation(5500, -1900, 100, 100);
-		//(500, 250, 100, 50, "platform"));
-	}
-	else if (TheGame::Instance()->level == 2)
-	{
-		level_two = new Level_One();
-		level_two->loadTextures();
-		level_two->createObjects(&m_gameObjects, &m_Platforms, &m_Hazards);
-
-		level_two->setWinLocation(500, 179, 110, 71);
+		level_one->setWinLocation(500, 179, 110, 71);
 		//(500, 250, 100, 50, "platform"));
 	}
 
@@ -174,7 +129,7 @@ bool PlayState::onEnter()
 	std::cout << "entering PlayState\n";
 
 	// Start the timer
-	TheGame::Instance()->p_Timer->start();
+	p_Timer->start();
 
 	return true;
 }
@@ -189,10 +144,9 @@ bool PlayState::onExit()
 	TheTextureManager::Instance()->clearFromTextureMap("player");
 	TheTextureManager::Instance()->clearFromTextureMap("platform");
 	TheTextureManager::Instance()->clearFromTextureMap("BG");
-	TheTextureManager::Instance()->clearFromTextureMap("hook");
 	std::cout << "exiting PlayState\n";
 	//Stop the Timer
-	TheGame::Instance()->p_Timer->stop();
+	p_Timer->stop();
 	return true;
 }
 

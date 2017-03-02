@@ -14,18 +14,27 @@ void PlayerSelectState::s_OnePlayer()
 }
 void PlayerSelectState::s_TwoPlayer()
 {
+	TheGame::Instance()->No();
+	/*
 	TheGame::Instance()->NumPlayers = 2;
 	TheGame::Instance()->getStateMachine()->pushState(new LevelSelectState());
+	*/
 }
 void PlayerSelectState::s_ThreePlayer()
 {
+	TheGame::Instance()->No();
+	/*
 	TheGame::Instance()->NumPlayers = 3;
 	TheGame::Instance()->getStateMachine()->pushState(new LevelSelectState());
+	*/
 }
 void PlayerSelectState::s_FourPlayer()
 {
+	TheGame::Instance()->No();
+	/*
 	TheGame::Instance()->NumPlayers = 4;
 	TheGame::Instance()->getStateMachine()->pushState(new LevelSelectState());
+	*/
 }
 
 void PlayerSelectState::s_PreviousMenu()
@@ -51,49 +60,56 @@ void PlayerSelectState::render()
 
 bool PlayerSelectState::onEnter()
 {
-	if (!TheTextureManager::Instance()->load("assets/previousbutton.png",
+	if (!TheTextureManager::Instance()->load("assets/Title.png", "gametitle", TheGame::Instance()->getRenderer()))
+	{
+		return false;
+	}
+	if (!TheTextureManager::Instance()->load("assets/ReturnButton.png",
 		"previousbutton", TheGame::Instance()->getRenderer()))
 	{
 		return false;
 	}
-	if (!TheTextureManager::Instance()->load("assets/Players_1.png",
+	if (!TheTextureManager::Instance()->load("assets/1_Player.png",
 		"onePbutton", TheGame::Instance()->getRenderer()))
 	{
 		return false;
 	}
-	if (!TheTextureManager::Instance()->load("assets/Players_2.png",
+	if (!TheTextureManager::Instance()->load("assets/2_Player.png",
 		"twoPbutton", TheGame::Instance()->getRenderer()))
 	{
 		return false;
 	}
-	if (!TheTextureManager::Instance()->load("assets/Players_3.png",
+	if (!TheTextureManager::Instance()->load("assets/3_Player.png",
 		"threePbutton", TheGame::Instance()->getRenderer()))
 	{
 		return false;
 	}
-	if (!TheTextureManager::Instance()->load("assets/Players_4.png",
+	if (!TheTextureManager::Instance()->load("assets/4_Player.png",
 		"fourPbutton", TheGame::Instance()->getRenderer()))
 	{
 		return false;
 	}
 
-	GameObject* button1 = new MenuButton(new LoaderParams(20, 100,
-		120, 145, "onePbutton"), s_OnePlayer);
-	GameObject* button2 = new MenuButton(new LoaderParams(150, 100,
-		120, 145, "twoPbutton"), s_TwoPlayer);
-	GameObject* button3 = new MenuButton(new LoaderParams(280, 100,
-		120, 145, "threePbutton"), s_ThreePlayer);
-	GameObject* button4 = new MenuButton(new LoaderParams(410, 100,
-		120, 145, "fourPbutton"), s_FourPlayer);
+	GameObject* button1 = new MenuButton(new LoaderParams(TheGame::Instance()->screen_width / 2 - 500, TheGame::Instance()->screen_height / 2 - 228,
+		240, 290, "onePbutton"), s_OnePlayer);
+	GameObject* button2 = new MenuButton(new LoaderParams(TheGame::Instance()->screen_width / 2 - 250, TheGame::Instance()->screen_height / 2 - 228,
+		240, 290, "twoPbutton"), s_TwoPlayer);
+	GameObject* button3 = new MenuButton(new LoaderParams(TheGame::Instance()->screen_width / 2, TheGame::Instance()->screen_height / 2 - 228,
+		240, 290, "threePbutton"), s_ThreePlayer);
+	GameObject* button4 = new MenuButton(new LoaderParams(TheGame::Instance()->screen_width / 2 + 250, TheGame::Instance()->screen_height / 2 - 228,
+		240, 290, "fourPbutton"), s_FourPlayer);
 
-	GameObject* button5 = new MenuButton(new LoaderParams(200, 300,
-		200, 80, "previousbutton"), s_PreviousMenu);
+	GameObject* button5 = new MenuButton(new LoaderParams(TheGame::Instance()->screen_width / 2 - 250, TheGame::Instance()->screen_height / 2 + 114,
+		502, 152, "previousbutton"), s_PreviousMenu);
+
+	GameObject* title = new MenuButton(new LoaderParams(TheGame::Instance()->screen_width / 2 - 325, TheGame::Instance()->screen_height / 2 - 400, 650, 106, "gametitle"), s_title);
 
 	m_gameObjects.push_back(button1);
 	m_gameObjects.push_back(button2);
 	m_gameObjects.push_back(button3);
 	m_gameObjects.push_back(button4);
 	m_gameObjects.push_back(button5);
+	m_gameObjects.push_back(title);
 
 	std::cout << "entering PlayerSelectState\n";
 
@@ -114,9 +130,15 @@ bool PlayerSelectState::onExit()
 	TheTextureManager::Instance()->clearFromTextureMap("twoPbutton");
 	TheTextureManager::Instance()->clearFromTextureMap("threePbutton");
 	TheTextureManager::Instance()->clearFromTextureMap("fourPbutton");
+	TheTextureManager::Instance()->clearFromTextureMap("gametitle");
 
 	// reset the mouse button states to false
 	TheInputHandler::Instance()->reset();
 	std::cout << "exiting PlayerSelectState\n";
 	return true;
+}
+
+void PlayerSelectState::s_title()
+{
+	std::cout << "Easter egg?\n";
 }
