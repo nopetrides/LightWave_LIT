@@ -28,23 +28,29 @@ void MenuState::render()
 
 bool MenuState::onEnter()
 {
-	if(!TheTextureManager::Instance()->load("assets/playbutton.png","playbutton", TheGame::Instance()->getRenderer()))
+	if (!TheTextureManager::Instance()->load("assets/Title.png", "Title", TheGame::Instance()->getRenderer()))
 	{
 		return false;
 	}
-	if (!TheTextureManager::Instance()->load("assets/optionbutton.png", "optionbutton", TheGame::Instance()->getRenderer()))
+	if(!TheTextureManager::Instance()->load("assets/StartButton.png","playbutton", TheGame::Instance()->getRenderer()))
 	{
 		return false;
 	}
-	if(!TheTextureManager::Instance()->load("assets/quitbutton.png","quitbutton", TheGame::Instance()->getRenderer()))
+	if (!TheTextureManager::Instance()->load("assets/OptionsButton.png", "optionbutton", TheGame::Instance()->getRenderer()))
+	{
+		return false;
+	}
+	if(!TheTextureManager::Instance()->load("assets/ExitButton.png","quitbutton", TheGame::Instance()->getRenderer()))
 	{
 		return false;
 	}
 
-	GameObject* button1 = new MenuButton(new LoaderParams(250, 25, 120, 145, "playbutton"),s_menuToPlay);
-	GameObject* button2 = new MenuButton(new LoaderParams(250, 175, 120, 145, "optionbutton"), s_settingsMenu);
-	GameObject* button3 = new MenuButton(new LoaderParams(250, 325, 120, 145, "quitbutton"),s_exitFromMenu);
+	GameObject* title = new MenuButton(new LoaderParams(TheGame::Instance()->screen_width / 2 - 325, TheGame::Instance()->screen_height / 2 - 400, 650, 106, "Title"), s_title);
+	GameObject* button1 = new MenuButton(new LoaderParams(TheGame::Instance()->screen_width /2 - 250, TheGame::Instance()->screen_height /2 - 280, 502, 152, "playbutton"),s_menuToPlay);
+	GameObject* button2 = new MenuButton(new LoaderParams(TheGame::Instance()->screen_width /2 - 250, TheGame::Instance()->screen_height /2 - 76, 502, 152, "optionbutton"), s_settingsMenu);
+	GameObject* button3 = new MenuButton(new LoaderParams(TheGame::Instance()->screen_width /2 - 250, TheGame::Instance()->screen_height /2 + 114, 502, 152, "quitbutton"),s_exitFromMenu);
 
+	m_gameObjects.push_back(title);
 	m_gameObjects.push_back(button1);
 	m_gameObjects.push_back(button2);
 	m_gameObjects.push_back(button3);
@@ -68,6 +74,7 @@ bool MenuState::onExit()
 	TheTextureManager::Instance()->clearFromTextureMap("playbutton");
 	TheTextureManager::Instance()->clearFromTextureMap("optionbutton");
 	TheTextureManager::Instance()->clearFromTextureMap("quitbutton");
+	TheTextureManager::Instance()->clearFromTextureMap("Title");
 	
 
 	std::cout << "exiting MenuState\n";
@@ -91,4 +98,9 @@ void MenuState::s_exitFromMenu()
 {
 	std::cout << "Quit button clicked\n";
 	TheGame::Instance()->quit();
+}
+
+void MenuState::s_title()
+{
+	std::cout << "Easter egg?\n";
 }

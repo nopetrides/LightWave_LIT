@@ -24,6 +24,7 @@ private:
 	static void s_ThreePlayer();
 	static void s_FourPlayer();
 	static void s_PreviousMenu();
+	static void s_title();
 
 	static const std::string s_pauseID;
 	std::vector<GameObject*> m_gameObjects;

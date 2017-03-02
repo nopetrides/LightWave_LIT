@@ -1,4 +1,4 @@
-#include "Timer.h"
+﻿#include "Timer.h"
 #include <iostream>
 Timer::Timer()
 {
@@ -26,7 +26,7 @@ void Timer::pause()
 	// Check to see if the timer is already running and it isn't paused already. 
 	if (b_Started && !b_Paused)
 	{
-		b_Paused = true; 
+		b_Paused = true;
 		pausedTicks = SDL_GetTicks(); // Save the time, to subtract later from total play time. 
 	}
 }
@@ -36,7 +36,7 @@ void Timer::unpause()
 	if (b_Paused)
 	{
 		//unpause
-		b_Paused = false; 
+		b_Paused = false;
 
 		//Reset starting ticks
 		startedTicks = SDL_GetTicks() - pausedTicks;
@@ -46,18 +46,27 @@ void Timer::unpause()
 	}
 }
 
+void Timer::draw(SDL_Renderer * renderer, int x, int y, int w, int h)
+{
+
+	SDL_Rect destRect;
+	SDL_Rect srcRect;
+	srcRect.x = 0;
+	srcRect.y = 0;
+	srcRect.w = destRect.w = w;
+	srcRect.h = destRect.h = h;
+	destRect.x = x;
+	destRect.y = y;
+
+	SDL_RenderCopyEx(renderer, p_Texture, &srcRect, &destRect, 0, 0, SDL_FLIP_NONE);
+}
+
 int Timer::getTicks()
 {
-	if (b_Started == true)
-	{
+
 		return SDL_GetTicks() - startedTicks;
-	}
-	else
-	{
-		std::cout << "Error, timer may not be started.\n" << SDL_GetError();
-		return 0;
-	}
-		
+	
+
 }
 
 bool Timer::isStarted()
@@ -70,28 +79,16 @@ bool Timer::isPaused()
 	return b_Paused;
 }
 
-void Timer::draw(SDL_Renderer* renderer)
-{
-	SDL_Rect destRect;
-	SDL_Rect srcRect;
-	srcRect.x = 0;
-	srcRect.y = 0;
-	srcRect.w = destRect.w = 60;
-	srcRect.h = destRect.h = 30;
-	destRect.x = 0;
-	destRect.y = 0;
 
-	SDL_RenderCopyEx(renderer, p_Texture, &srcRect, &destRect, 0, 0, SDL_FLIP_NONE ) ;
-}
 
 void Timer::init()
 {
-	if (TTF_OpenFont("assets/fish.ttf", 10) < 0)
+	if (TTF_OpenFont("assets/neo_scifi.ttf", 10) < 0)
 	{
 		std::cout << "Failed to open font. Error: " << TTF_GetError();
 	}
 
-	myFont = TTF_OpenFont("assets/fish.ttf", 24);
+	myFont = TTF_OpenFont("assets/neo_scifi.ttf", 36);
 
 	if (!myFont)
 	{
@@ -102,19 +99,18 @@ void Timer::init()
 void Timer::update(SDL_Renderer* renderer)
 {
 	std::stringstream time;
-	time.precision(4);
+	time.precision(3);
 	//time.fixed;
 	//Divide by 1000 to get seconds
-	time  << getTicks() / 1000.f ;
-	
+	time << getTicks() / 1000.f;
+
 	//Checl to see if the string stream is empty. 
-	if(time.rdbuf()->in_avail() > 0)
-	p_Time = TTF_RenderText_Solid(myFont, time.str().c_str(), white);
+	if (time.rdbuf()->in_avail() > 0)
+		p_Time = TTF_RenderText_Solid(myFont, time.str().c_str(), white);
 	p_Texture = SDL_CreateTextureFromSurface(renderer, p_Time);
 	SDL_FreeSurface(p_Time); // Free the surface
 
 }
-
 
 
 
