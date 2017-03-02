@@ -20,11 +20,12 @@ public:
 
 private:
 	static void s_Toggle();
+	static void s_SFXToggle();
 	static void s_PreviousMenu();
+	static void s_title();
 
 	static const std::string s_pauseID;
 	std::vector<GameObject*> m_gameObjects;
-
 };
 
 #endif

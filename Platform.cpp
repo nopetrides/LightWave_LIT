@@ -1,4 +1,4 @@
-#include "Platform.h"
+﻿#include "Platform.h"
 #include "Game.h"
 Platform::Platform(const LoaderParams* pParams) :SDLGameObject(pParams)
 {
@@ -29,4 +29,3 @@ void Platform::clean()
 {
 
 }
-

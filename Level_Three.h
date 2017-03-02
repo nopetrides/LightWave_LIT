@@ -1,5 +1,5 @@
-﻿#ifndef  LEVEL_ONE_H
-#define  LEVEL_ONE_H
+#ifndef  LEVEL_THREE_H
+#define  LEVEL_THREE_H
 #include "Game.h"
 #include "Background.h"
 #include "Platform.h"
@@ -15,11 +15,11 @@ Created loadTextures function to load each texture to the texture manager
 Created createObjects to handle object instantiation and pushBack calls
 
 */
-class Level_One
+class Level_Three
 {
 public:
 
-	Level_One();
+	Level_Three();
 	void loadTextures();
 	void createObjects(std::vector<SDLGameObject* >* gameObjects, std::vector<SDLGameObject*>* platforms, std::vector<SDLGameObject*>* hazards);
 	void setWinLocation(int x, int y, int width, int height);
@@ -34,4 +34,4 @@ private:
 };
 
 
-#endif //  LEVEL_ONE_H
+#endif //  LEVEL_Three_H
