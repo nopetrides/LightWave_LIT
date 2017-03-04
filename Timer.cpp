@@ -83,12 +83,12 @@ bool Timer::isPaused()
 
 void Timer::init()
 {
-	if (TTF_OpenFont("assets/neo_scifi.ttf", 10) < 0)
+	if (TTF_OpenFont("assets/system.fon", 10) < 0)
 	{
 		std::cout << "Failed to open font. Error: " << TTF_GetError();
 	}
 
-	myFont = TTF_OpenFont("assets/neo_scifi.ttf", 36);
+	myFont = TTF_OpenFont("assets/system.fon", 36);
 
 	if (!myFont)
 	{

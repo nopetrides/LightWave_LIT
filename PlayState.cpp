@@ -35,7 +35,7 @@ void PlayState::update()
 	{
 		m_Players[0]->PlayerCollisionAgainstPlatforms(m_Platforms[i]);
 	
-		if (m_Players[0]->didHookHitPlatform(m_Platforms[i]))
+		if (m_Players[0]->didHookHitPlatform(m_Platforms[i]) && m_Players[0]->extending)
 		{//Check for platform collision with the SDL hook point. 
 		 //TODO:: Distance checking
 			m_Players[0]->applyForce(m_Players[0]->getDesiredX(), m_Players[0]->getDesiredY());
@@ -49,6 +49,8 @@ void PlayState::update()
 
 	if (TheGame::Instance()->level == 1)
 	{
+		//Track the level for showing the proper score at the end
+		TheGame::Instance()->levelPreviouslyPlayed = 1;
 		if (checkForWin(level_one->getWinLocation(), m_Players[0]))
 		{
 			TheGame::Instance()->getStateMachine()->changeState(new ScoreState());
@@ -56,6 +58,8 @@ void PlayState::update()
 	}
 	else if (TheGame::Instance()->level == 2)
 	{
+		//Track the level for showing the proper score at the end
+		TheGame::Instance()->levelPreviouslyPlayed = 2;
 		if (checkForWin(level_two->getWinLocation(), m_Players[0]))
 		{
 			TheGame::Instance()->getStateMachine()->changeState(new ScoreState());
@@ -63,6 +67,8 @@ void PlayState::update()
 	}
 	else if (TheGame::Instance()->level == 3)
 	{
+		//Track the level for showing the proper score at the end
+		TheGame::Instance()->levelPreviouslyPlayed = 3;
 		if (checkForWin(level_three->getWinLocation(), m_Players[0]))
 		{
 			TheGame::Instance()->getStateMachine()->changeState(new ScoreState());
@@ -117,7 +123,7 @@ void PlayState::render()
 
 bool PlayState::onEnter()
 {
-	if (!TheTextureManager::Instance()->load("assets/player-animate-corrected.png", "player", TheGame::Instance()->getRenderer()))
+	if (!TheTextureManager::Instance()->load("assets/spritesheet.png", "player", TheGame::Instance()->getRenderer()))
 	{
 		return false;
 	}
@@ -154,7 +160,7 @@ bool PlayState::onEnter()
 		//Width is 110 just for some extra room. 
 
 
-		level_one->setWinLocation(5500, -1900, 100, 100);
+		level_one->setWinLocation(5500, -1900, 150, 150);
 		//(500, 250, 100, 50, "platform"));
 	}
 	else if (TheGame::Instance()->level == 2)
@@ -163,7 +169,7 @@ bool PlayState::onEnter()
 		level_two->loadTextures();
 		level_two->createObjects(&m_gameObjects, &m_Platforms, &m_Hazards);
 
-		level_two->setWinLocation(1600, 1600, 300, 200);
+		level_two->setWinLocation(500, 200, 300, 150);
 		//(500, 250, 100, 50, "platform"));
 	}
 	else if (TheGame::Instance()->level == 3)
@@ -172,7 +178,7 @@ bool PlayState::onEnter()
 		level_three->loadTextures();
 		level_three->createObjects(&m_gameObjects, &m_Platforms, &m_Hazards);
 
-		level_three->setWinLocation(10500, -120, 500, 300);
+		level_three->setWinLocation(10300, -300, 500, 300);
 
 		//(500, 250, 100, 50, "platform"));
 	}

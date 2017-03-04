@@ -71,12 +71,15 @@ public:
 	Mix_Chunk *gDieFX; // SOUND BYTE
 	Mix_Chunk *gWrongFX; // SOUND BYTE
 	void No();
+	void changeToPlay();
 
 	Mix_Music *gMusic; // BACKGROUND MUSIC	
 	Mix_Music *gMusic_future; // BACKGROUND MUSIC	
 	Timer* p_Timer;
 	bool SoundOn = true;
 	bool SFXOn = true;
+
+	bool HotReload = false;
 	int NumPlayers = 0;
 	int level = 0;
 	int levelPreviouslyPlayed;
@@ -84,6 +87,8 @@ public:
 	static const int level_width = 1920;
 	static const int screen_width = 1920;
 	static const int screen_height = 1080;
+
+
 
 };
 // create the typedef

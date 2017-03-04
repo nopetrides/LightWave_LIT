@@ -129,6 +129,8 @@ void Game::handleEvents()
 
 	if(TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_RETURN))
 	{
+		level = 1;
+		NumPlayers = 1;
 		m_pGameStateMachine->changeState(new PlayState());
 	}
 
@@ -139,6 +141,14 @@ void Game::No()
 	if (TheGame::Instance()->SFXOn)
 		Mix_PlayChannel(-1, TheGame::Instance()->gWrongFX, 0); // ** PLAY SFX/SOUND BYTE - PUT THIS WHEREVER THE SFX WOULD BE PLAYED - the '2' means it loops 3 times total
 
+}
+
+void Game::changeToPlay()
+{
+	//level = 1;
+	//NumPlayers = 1;
+	m_pGameStateMachine->changeState(new MenuState());
+	m_pGameStateMachine->changeState(new PlayState());
 }
 
 void Game::quit()

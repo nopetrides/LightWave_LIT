@@ -1,10 +1,4 @@
-﻿//
-//  GameObject.h
-//  SDL Game Programming Book
-//
-//  Created by shaun mitchell on 31/12/2012.
-//  Copyright (c) 2012 shaun mitchell. All rights reserved.
-//
+﻿
 
 #ifndef SDLGameObject_h
 #define SDLGameObject_h
@@ -44,6 +38,7 @@ public:
 	bool double_jumping = true;
 	bool alive = true;
 	bool dash_available = true;
+	bool facingRight;
 
 	//we dont use these anymore
 	bool b_collideBottom = false;
@@ -77,4 +72,4 @@ protected:
 
 	std::string m_textureID;
 };
-#endif /* defined(__SDL_Game_Programming_Book__Chapter_3_SDLGameObject__) */
+#endif 

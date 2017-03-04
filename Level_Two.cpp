@@ -21,23 +21,41 @@ Level_Two::Level_Two()
 void Level_Two::loadTextures()
 {
 	//Load the background texture. 
-	if (!TheTextureManager::Instance()->load("assets/5-DarkBlocks.png", "background", TheGame::Instance()->getRenderer()))
+	if (!TheTextureManager::Instance()->load("assets/BG12.png", "background", TheGame::Instance()->getRenderer()))
+	{
+		std::cout << "Error: " << SDL_GetError();
+	}
+	if (!TheTextureManager::Instance()->load("assets/Light.png", "light", TheGame::Instance()->getRenderer()))
 	{
 		std::cout << "Error: " << SDL_GetError();
 	}
 
-	//Load the platform texture
+	//Load the platform texture.
 	if (!TheTextureManager::Instance()->load("assets/GreenFloor.png", "platform", TheGame::Instance()->getRenderer()))
 	{
 		std::cout << "Error: " << SDL_GetError();
 	}
 
-	//Load the platform texture
+	// Load the hazard textures.
+	// Hazard 4 is not used, but is included for possible future editing. 
 	if (!TheTextureManager::Instance()->load("assets/hazard.png", "hazard", TheGame::Instance()->getRenderer()))
 	{
 		std::cout << "Error: " << SDL_GetError();
 	}
+	if (!TheTextureManager::Instance()->load("assets/hazard2.png", "hazard2", TheGame::Instance()->getRenderer()))
+	{
+		std::cout << "Error: " << SDL_GetError();
+	}
+	if (!TheTextureManager::Instance()->load("assets/hazard3.png", "hazard3", TheGame::Instance()->getRenderer()))
+	{
+		std::cout << "Error: " << SDL_GetError();
+	}
+	if (!TheTextureManager::Instance()->load("assets/hazard4.png", "hazard4", TheGame::Instance()->getRenderer()))
+	{
+		std::cout << "Error: " << SDL_GetError();
+	}
 
+	// Load the finish line texture.
 	if (!TheTextureManager::Instance()->load("assets/checker.png", "finish", TheGame::Instance()->getRenderer()))
 	{
 		std::cout << "Error: " << SDL_GetError();
@@ -48,65 +66,75 @@ void Level_Two::createObjects(std::vector<SDLGameObject* >* gameObjects, std::ve
 {
 	// This level will be composed primarily of three
 
-	SDLGameObject* background = new Platform(new LoaderParams(0, 0, 3840, 2160, "background"));
+	SDLGameObject* background = new Platform(new LoaderParams(-5000, -11000, 27200, 16000, "background"));
 
+	/*
+	//Player* player = new Player(new LoaderParams(500, 500, 71, 65, "player")); // Player start location
 	SDLGameObject* startplat = new Platform(new LoaderParams(100, 2000, 3000, 100, "platform")); // Starting location
+	(500, 500, 71, 65, "player")
+	(100, 2000, 3000, 100, "platform")
+	(600, 300, 300, 40, "finish"))
 
-	SDLGameObject* cplat1 = new Platform(new LoaderParams(1250, 1800, 1000, 40, "platform")); // Center-Bottom
-	SDLGameObject* cplat2 = new Platform(new LoaderParams(750, 1780, 500, 40, "platform"));
-	SDLGameObject* cplat3 = new Platform(new LoaderParams(2240, 1780, 500, 40, "platform"));
-	SDLGameObject* cplat4 = new Platform(new LoaderParams(2740, 1280, 40, 500, "platform")); // Center-Right side
-	SDLGameObject* cplat5 = new Platform(new LoaderParams(2770, 1080, 40, 200, "platform"));
-	SDLGameObject* cplat6 = new Platform(new LoaderParams(2790, 780, 40, 300, "platform"));
-	SDLGameObject* cplat7 = new Platform(new LoaderParams(2770, 480, 40, 300, "platform"));
-	SDLGameObject* cplat8 = new Platform(new LoaderParams(2680, 380, 100, 100, "platform"));
-	SDLGameObject* cplat9 = new Platform(new LoaderParams(2600, 360, 100, 40, "platform"));
-	SDLGameObject* cplat10 = new Platform(new LoaderParams(740, 1280, 40, 500, "platform")); // Center-Left side
-	SDLGameObject* cplat11 = new Platform(new LoaderParams(710, 1080, 40, 200, "platform"));
-	SDLGameObject* cplat12 = new Platform(new LoaderParams(690, 780, 40, 300, "platform"));
-	SDLGameObject* cplat13 = new Platform(new LoaderParams(710, 480, 40, 300, "platform"));
-	SDLGameObject* cplat14 = new Platform(new LoaderParams(740, 380, 100, 100, "platform"));
-	SDLGameObject* cplat15 = new Platform(new LoaderParams(820, 360, 100, 40, "platform"));
-	SDLGameObject* iplat1 = new Platform(new LoaderParams(770, 700, 800, 40, "platform")); // Center-Internal
-	SDLGameObject* iplat2 = new Platform(new LoaderParams(1950, 700, 800, 40, "platform"));
-	SDLGameObject* iplat3 = new Platform(new LoaderParams(970, 900, 1600, 40, "platform"));
-	SDLGameObject* iplat4 = new Platform(new LoaderParams(770, 1300, 800, 40, "platform"));
-	SDLGameObject* iplat5 = new Platform(new LoaderParams(1950, 1300, 800, 40, "platform"));
+	A bit of manual testing..+400, -1400 will work.
+	Tested more. Reduce by 1400 on X, for -800 net change.
+	*/
 
-	SDLGameObject* lplat1 = new Platform(new LoaderParams(50, 1800, 120, 40, "platform")); // Left side
-	SDLGameObject* lplat2 = new Platform(new LoaderParams(-350, 1600, 100, 40, "platform"));
-	SDLGameObject* lplat3 = new Platform(new LoaderParams(300, 1250, 60, 40, "platform"));
-	SDLGameObject* lplat4 = new Platform(new LoaderParams(280, 1100, 300, 40, "platform"));
-	SDLGameObject* lplat5 = new Platform(new LoaderParams(-50, 800, 40, 600, "platform"));
-	SDLGameObject* lplat6 = new Platform(new LoaderParams(-500, 800, 440, 200, "platform")); // Floating blocks
-	SDLGameObject* lplat7 = new Platform(new LoaderParams(-650, 400, 40, 40, "platform"));
-	SDLGameObject* lplat8 = new Platform(new LoaderParams(-600, 200, 40, 40, "platform"));
+	SDLGameObject* startplat = new Platform(new LoaderParams(-900, 600, 3000, 100, "platform")); // Starting location
 
-	SDLGameObject* rplat1 = new Platform(new LoaderParams(3000, 1850, 800, 40, "platform")); // Right side
-	SDLGameObject* rplat2 = new Platform(new LoaderParams(2800, 1650, 400, 40, "platform"));
-	SDLGameObject* rplat3 = new Platform(new LoaderParams(3400, 1250, 300, 40, "platform"));
-	SDLGameObject* rplat4 = new Platform(new LoaderParams(4000, 1100, 300, 40, "platform"));
-	SDLGameObject* rplat5 = new Platform(new LoaderParams(2800, 800, 200, 40, "platform"));
-	SDLGameObject* rplat6 = new Platform(new LoaderParams(2820, 650, 40, 40, "platform")); // Stepping stone
+	SDLGameObject* cplat1 = new Platform(new LoaderParams(250, 400, 1000, 40, "platform")); // Center-Bottom
+	SDLGameObject* cplat2 = new Platform(new LoaderParams(-350, 380, 600, 40, "platform"));
+	SDLGameObject* cplat3 = new Platform(new LoaderParams(1240, 380, 500, 40, "platform"));
+	SDLGameObject* cplat4 = new Platform(new LoaderParams(1740, -120, 40, 500, "platform")); // Center-Right side
+	SDLGameObject* cplat5 = new Platform(new LoaderParams(1770, -320, 40, 200, "platform"));
+	SDLGameObject* cplat6 = new Platform(new LoaderParams(1790, -620, 40, 300, "platform"));
+	SDLGameObject* cplat7 = new Platform(new LoaderParams(1770, -920, 40, 300, "platform"));
+	SDLGameObject* cplat8 = new Platform(new LoaderParams(1680, -1020, 100, 100, "platform"));
+	SDLGameObject* cplat9 = new Platform(new LoaderParams(1600, -1040, 100, 40, "platform"));
+	SDLGameObject* cplat10 = new Platform(new LoaderParams(-360, -120, 40, 500, "platform")); // Center-Left side
+	SDLGameObject* cplat11 = new Platform(new LoaderParams(-390, -320, 40, 200, "platform"));
+	SDLGameObject* cplat12 = new Platform(new LoaderParams(-390, -620, 40, 300, "platform"));
+	SDLGameObject* cplat13 = new Platform(new LoaderParams(-390, -920, 40, 300, "platform"));
+	SDLGameObject* cplat14 = new Platform(new LoaderParams(-3600, -1020, 100, 100, "platform"));
+	SDLGameObject* cplat15 = new Platform(new LoaderParams(-1800, -1040, 100, 40, "platform"));
+	SDLGameObject* iplat1 = new Platform(new LoaderParams(-330, -700, 800, 40, "platform")); // Center-Internal
+	SDLGameObject* iplat2 = new Platform(new LoaderParams(950, -700, 800, 40, "platform"));
+	SDLGameObject* iplat3 = new Platform(new LoaderParams(-30, -500, 1600, 40, "platform"));
+	SDLGameObject* iplat4 = new Platform(new LoaderParams(-330, -100, 800, 40, "platform"));
+	SDLGameObject* iplat5 = new Platform(new LoaderParams(950, -100, 800, 40, "platform"));
+	SDLGameObject* lplat1 = new Platform(new LoaderParams(-950, 400, 120, 40, "platform")); // Left side
+	SDLGameObject* lplat2 = new Platform(new LoaderParams(-1350, 200, 100, 40, "platform"));
+	SDLGameObject* lplat3 = new Platform(new LoaderParams(-700, -150, 60, 40, "platform"));
+	SDLGameObject* lplat4 = new Platform(new LoaderParams(-720, -300, 300, 40, "platform"));
+	SDLGameObject* lplat5 = new Platform(new LoaderParams(-1050, -600, 40, 600, "platform"));
+	SDLGameObject* lplat6 = new Platform(new LoaderParams(-1500, -600, 440, 200, "platform")); // Floating blocks
+	SDLGameObject* lplat7 = new Platform(new LoaderParams(-1650, -1000, 40, 40, "platform"));
+	SDLGameObject* lplat8 = new Platform(new LoaderParams(-1600, -1200, 40, 40, "platform"));
 
-																						   //Hazards
-	SDLGameObject* rhaz1 = new Hazard(new LoaderParams(2750, 1750, 100, 100, "hazard"));
-	SDLGameObject* rhaz2 = new Hazard(new LoaderParams(2900, 1550, 100, 100, "hazard"));
-	SDLGameObject* rhaz3 = new Hazard(new LoaderParams(3650, 1050, 100, 100, "hazard"));
-	SDLGameObject* rhaz4 = new Hazard(new LoaderParams(3000, 800, 100, 100, "hazard"));
-	SDLGameObject* rhaz5 = new Hazard(new LoaderParams(3100, 800, 100, 100, "hazard"));
+	SDLGameObject* rplat1 = new Platform(new LoaderParams(2000, 450, 800, 40, "platform")); // Right side
+	SDLGameObject* rplat2 = new Platform(new LoaderParams(1800, 250, 400, 40, "platform"));
+	SDLGameObject* rplat3 = new Platform(new LoaderParams(2400, -150, 300, 40, "platform"));
+	SDLGameObject* rplat4 = new Platform(new LoaderParams(3000, -300, 300, 40, "platform"));
+	SDLGameObject* rplat5 = new Platform(new LoaderParams(1800, -600, 200, 40, "platform"));
+	SDLGameObject* rplat6 = new Platform(new LoaderParams(1820, -750, 40, 40, "platform")); // Stepping stone
+																						   
+	SDLGameObject* rhaz1 = new Hazard(new LoaderParams(1750, 350, 120, 120, "hazard3")); // Hazards
+	SDLGameObject* rhaz2 = new Hazard(new LoaderParams(1900, 150, 120, 120, "hazard3"));
+	SDLGameObject* rhaz3 = new Hazard(new LoaderParams(2650, -350, 120, 120, "hazard3"));
+	SDLGameObject* rhaz4 = new Hazard(new LoaderParams(2000, -600, 120, 120, "hazard3"));
+	SDLGameObject* rhaz5 = new Hazard(new LoaderParams(2100, -600, 120, 120, "hazard3"));
 
-	SDLGameObject* ihaz1 = new Hazard(new LoaderParams(1650, 650, 180, 180, "hazard"));
+	SDLGameObject* ihaz1 = new Hazard(new LoaderParams(650, -750, 148, 170, "hazard2"));
+	SDLGameObject* ihaz2 = new Hazard(new LoaderParams(-230, -200, 100, 100, "hazard"));
+	SDLGameObject* ihaz3 = new Hazard(new LoaderParams(100, -200, 100, 100, "hazard"));
+	SDLGameObject* ihaz4 = new Hazard(new LoaderParams(5800, -200, 100, 100, "hazard"));
+	SDLGameObject* ihaz5 = new Hazard(new LoaderParams(900, -200, 100, 100, "hazard"));
+	SDLGameObject* ihaz6 = new Hazard(new LoaderParams(1300, -200, 100, 100, "hazard"));
+	SDLGameObject* ihaz7 = new Hazard(new LoaderParams(1550, -200, 100, 100, "hazard"));
 
-	SDLGameObject* ihaz2 = new Hazard(new LoaderParams(770, 1200, 100, 100, "hazard"));
-	SDLGameObject* ihaz3 = new Hazard(new LoaderParams(1100, 1200, 100, 100, "hazard"));
-	SDLGameObject* ihaz4 = new Hazard(new LoaderParams(1520, 1200, 100, 100, "hazard"));
-	SDLGameObject* ihaz5 = new Hazard(new LoaderParams(1900, 1200, 100, 100, "hazard"));
-	SDLGameObject* ihaz6 = new Hazard(new LoaderParams(2300, 1200, 100, 100, "hazard"));
-	SDLGameObject* ihaz7 = new Hazard(new LoaderParams(2650, 1200, 100, 100, "hazard"));
 
 	// This class type may change, if we make an actual winning zone class. 
-	SDLGameObject* winPlat = new Platform(new LoaderParams(1600, 1700, 300, 40, "platform"));
+	SDLGameObject* winPlat = new Platform(new LoaderParams(600, 300, 300, 40, "finish"));
+	SDLGameObject* light = new Platform(new LoaderParams(700, 200, 100, 79, "light"));
 
 	gameObjects->push_back(background);
 	gameObjects->push_back(startplat);
@@ -161,6 +189,7 @@ void Level_Two::createObjects(std::vector<SDLGameObject* >* gameObjects, std::ve
 	gameObjects->push_back(ihaz5);
 	gameObjects->push_back(ihaz6);
 	gameObjects->push_back(ihaz7);
+	gameObjects->push_back(light);
 
 	platforms->push_back(cplat1); // Center
 	platforms->push_back(cplat2);

@@ -1,10 +1,4 @@
-//
-//  TextureManager.h
-//  SDL Game Programming Book
-//
-//  Created by shaun mitchell on 31/12/2012.
-//  Copyright (c) 2012 shaun mitchell. All rights reserved.
-//
+
 
 #ifndef __TextureManager__
 #define __TextureManager__

@@ -46,8 +46,8 @@ private:
 
 	std::stringstream currentScore;
 	std::stringstream highScore;
-	int lowestTime;
-	int playerTimeAsInt;
+	float lowestTime;
+	float playerTimeAsInt;
 
 	SDL_Texture* highScoreTexture;
 	SDL_Surface* highScoreSurface;

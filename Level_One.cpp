@@ -46,7 +46,11 @@ void Level_One::loadTextures()
 	}
 
 	//Load the background texture. 
-	if (!TheTextureManager::Instance()->load("assets/5-DarkBlocks.png", "background", TheGame::Instance()->getRenderer()))
+	if (!TheTextureManager::Instance()->load("assets/BG11.png", "background", TheGame::Instance()->getRenderer()))
+	{
+		std::cout << "Error: " << SDL_GetError();
+	}
+	if (!TheTextureManager::Instance()->load("assets/Light.png", "light", TheGame::Instance()->getRenderer()))
 	{
 		std::cout << "Error: " << SDL_GetError();
 	}
@@ -93,7 +97,7 @@ void Level_One::createObjects(std::vector<SDLGameObject* >* gameObjects, std::ve
 	//Create objects in the level. 
 	// This is where we will create a vector of all platforms for ease of coding
 	// then shove them into the game objects vector. 
-	SDLGameObject* background = new Platform(new LoaderParams(0, 0, 1920, 1080, "background"));
+	SDLGameObject* background = new Platform(new LoaderParams(-5000, -11000, 27200, 16000, "background"));
 
 	// Starting Platform
 	SDLGameObject* plat = new Platform(new LoaderParams(400, 900, 100, 40, "platform"));
@@ -149,6 +153,7 @@ void Level_One::createObjects(std::vector<SDLGameObject* >* gameObjects, std::ve
 	SDLGameObject* box22 = new Platform(new LoaderParams(6320, -860, 160, 160, "bluebox"));
 	// Finish
 	SDLGameObject* winPlat = new Platform(new LoaderParams(5500, -1800, 100, 40, "finish"));
+	SDLGameObject* light = new Platform(new LoaderParams(5500, -1900, 100, 79, "light"));
 	// Instructions
 	SDLGameObject* intruct1 = new Platform(new LoaderParams(400, 600, 400, 300, "Instruc1"));
 	SDLGameObject* intruct2 = new Platform(new LoaderParams(1400, 600, 400, 300, "Instruc2"));
@@ -243,6 +248,7 @@ void Level_One::createObjects(std::vector<SDLGameObject* >* gameObjects, std::ve
 	gameObjects->push_back(box22);
 
 	gameObjects->push_back(winPlat);
+	gameObjects->push_back(light);
 
 	gameObjects->push_back(haz1);
 	gameObjects->push_back(haz2);

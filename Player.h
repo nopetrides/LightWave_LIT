@@ -23,6 +23,7 @@ public:
 	SDL_Point* grapplePoint = new SDL_Point();
 	bool didHookHitPlatform(SDLGameObject *r);
 	int maxHookDistance = 500;
+	float grapplePointDistance;
 
 
 	int getDesiredX() { return desiredX; }
@@ -34,14 +35,15 @@ public:
 	void setCamX(int x) { camX = x; }
 	void setCamY(int y) { camY = y; }
 
-
 	float timeHookUsed = NULL;
 	float hookCoolDown = 5000; // 5 seconds.
 	void applyForce(int x, int y);
 
 	float hookExtendSpeed = 30;
-	float pullPlayerSpeed = 25;
+	float pullPlayerSpeed = 30;
 	int hookAngle = 0;
+
+	bool extending = false;
 
 private:
 	void handleInput(); //page 89
@@ -52,9 +54,9 @@ private:
 	float hookLength;
 	int midpointX;
 	int midpointY;
-	bool extending = false;
-	bool hooked = false;
 
+	bool hooked = false;
+	bool hookpressed = false;
 
 	int camX;
 	int camY;

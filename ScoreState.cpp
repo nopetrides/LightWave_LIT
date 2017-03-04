@@ -61,7 +61,7 @@ bool ScoreState::onEnter()
 
 	std::cout << "entering ScoreState\n";
 
-
+	TheGame::Instance()->p_Timer->pause();
 	getTimeFromFile();
 	prepareHighScore();
 	prepareCurrentScore();
@@ -91,7 +91,7 @@ bool ScoreState::onExit()
 
 void ScoreState::prepareCurrentScore()
 {
-
+	currentScore.precision(4);
 	currentScore << "Your time was: " << TheGame::Instance()->p_Timer->getTicks() / 1000.f;
 	//Checl to see if the string stream is empty. 
 	if (currentScore.rdbuf()->in_avail() > 0)
@@ -149,7 +149,7 @@ void ScoreState::getTimeFromFile()
 			}
 			file.close();
 
-			lowestTime = atoi(temp.c_str());
+			lowestTime = atof(temp.c_str());
 
 			std::string temp2;
 			temp2 = currentScore.str();
@@ -180,7 +180,7 @@ void ScoreState::prepareHighScore()
 
 	if ((playerTimeAsInt / 1000) < lowestTime)
 	{
-		//highScore.precision(1);
+		highScore.precision(4);
 		//this means we want to render the layerTimeAsInt in the highscore area. 
 		highScore << "Best time is: " << playerTimeAsInt / 1000.f;
 		//Checl to see if the string stream is empty. 
@@ -194,6 +194,7 @@ void ScoreState::prepareHighScore()
 	else
 	{
 		//this means we want to render the layerTimeAsInt in the highscore area. 
+		highScore.precision(4);
 		highScore << "Best time is: " << lowestTime;
 		//Checl to see if the string stream is empty. 
 		if (highScore.rdbuf()->in_avail() > 0)
