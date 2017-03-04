@@ -5,7 +5,6 @@
 #include "SDLGameObject.h"
 #include "SDL_mixer.h"
 #include "Player.h"
-#include "Enemy.h"
 #include <iostream>
 #include <vector>
 #include "GameStateMachine.h"
@@ -80,6 +79,7 @@ public:
 	bool SFXOn = true;
 	int NumPlayers = 0;
 	int level = 0;
+	int levelPreviouslyPlayed;
 	static const int level_height = 1080;
 	static const int level_width = 1920;
 	static const int screen_width = 1920;
